@@ -1,0 +1,151 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>PHP Includes</title>
+</head>
+<body>
+	<h1>Converting your website to use PHP</h1>
+	
+	<h3>Pre-Reqs</h3>
+	<ul>
+		<li>Apache and PHP (XAMPP) are installed</li>
+		<li>A good understanding of server-side vs client-side scripts</li>
+		<li>Understanding the <b>document root directory</b> of a web server</li>
+		<li>Understanding of <b>localhost</b></li>
+		<li>Understanding of the significance of the title tag and the meta/description tag</li>
+	</ul>
+
+	<h3>Part 1 - Setting Up The Project</h3>
+	<ol>
+		<li>Create a Git repository on BitBucket called <b>My New Site</b>, and clone it into your doc root directory.</li>
+		<li>
+			You should have this folder in your doc root dir: <b>web-programming-final-project</b>.
+			Copy the contents of this folder into the <b>my-new-site</b> folder that you cloned in the previous step.
+		</li>
+		<li>
+			Inside the my-new-site folder, create a folder named <b>INSTRUCTIONS</b>.
+			You should put the instructions for each step of this project in this folder.
+		</li>
+		<li>Stage and commit the files you just added to the project.</li>
+		<li>
+			Make sure that your Apache web server is running (check the XAMPP control panel).
+   			<br>   
+			Navigate to the site's home page in the browser.
+			The url you enter should look like this: <b>localhost/my-new-site/</b>
+		</li>
+	</ol>
+	<h3>Part 2 - Disecting the home page into parts</h3>
+	<ol>
+		<li>Rename all .html files to be .php files (don't forget the one in the blog folder) </li>
+		<li>Inside the my-new-site folder, create a folder named <b>includes</b></li>
+		<li>Inside the 'includes' folder, create a file named <b>header.inc.php</b>. Yes, there are two file extensions!</li>
+		<li>Inside the 'includes' folder, create a file named <b>footer.inc.php</b>. Yes, there are two file extensions!</li>
+		<li>
+			Open up the home page (index.php) in your editor, we will disect this file into parts.
+			The first part will include lines 1-24 and the last part will include lines 64-72.
+			When you are done with the following steps, you index.php page will have only a <b>main</b> tag (and it's contents) and and <b>aside</b> (and it's contents).
+			<br> 
+			NOTE: Make sure you are looking at the correct page, if you are looking at the code for blog/index.php then close the file and open the index.php file that is inside the my-new-site folder. 
+		</li>
+		<li>
+			Select the code from the top of index.php down to (and including) the opening div tag that has an id attribute set to 'content' (lines 1 - 24).
+			<br>
+			Cut the code you just selected and paste it into header.inc.php (make sure to save all your changes) 
+		</li>
+		<li>
+			Now, in index.php, find the closing tag that went with the opening div tag that was on line 24.
+			<br>
+			Select all code starting with that closing tag, down to the very bottom of the page.
+			<br>
+			Cut the selected code, and paste it into footer.inc.php.
+		</li>
+		<li>
+			Now let's add PHP code to the top and bottom of index.php that will link to header.inc.php and footer.inc.php.
+			<br> 
+			Add <a href="screen-shots/1-link-to-header.png">this code</a> to the top of index.php.
+			<br>
+			Add <a href="screen-shots/2-link-to-footer.png">this code</a> to the bottom of index.php.
+		</li>
+		<li>
+			It's very important to make a distinction between links in our PHP code vs. links in our HTML, CSS, or JavaScript
+			I like to refer to links in PHP code as <b>server-side links</b> and links in HTML, CSS, or JavaScript code as <b>client-side links</b>.
+		</li>
+		<li>
+			We need to make some updates in header.inc.php and footer.inc.php since we converted our .html files into .php files.
+			<br>
+			In header.inc.php, update the links inside the nav tag to point to .php files rather than .html files.
+			<br>
+			In footer.inc.php, update the link to the privacy policy page.
+		</li>
+		<li>
+			Refresh index.php in the browser, you should see NO changes to the way the page appears if you did everything correctly.
+		</li>
+	</ol>
+	
+	<h3>Part 3 - Updating the other web pages</h3>
+	<ol>
+		<li>
+			Now you'll replace the code in the top and bottom of the other web pages in the site, and replace it with PHP code that links to header.inc.php and footer.inc.php.
+			<br>
+			When you are done, each of the following pages should only have a <b>main</b> tag and an <b>aside</b> tag (and the PHP code that links to the header and footer files).
+			<ul>
+				<li>pictures.php</li>
+				<li>contact.php</li>
+				<li>privacy-policy.php</li>
+				<li>blog/index.php</li>
+			</ul>
+			Note: Now all the pages have the exact same title and meta/description, which is not what we want (we'll fix that soon). 
+			<br>
+			Note: The pictures page and the contact page will be broken (since they need links to .js files that are not included inside of header.inc.php).
+			<br>
+			Note: The blog page is completely broken. Do you know why? You'll see a PHP error when you try to view the page in the browser. And once we fix this error, you'll discover that there are other problems as well.
+			<br>
+			We'll address these problems in the next step, when we talk about paths, and linking to files.
+			<br>
+			<b>What is the advantage of moving our code into header.inc.php and footer.inc.php?</b>
+		</li>
+	</ol>
+
+	<h3>Part 4 - Fixing the page title and description</h3>
+	<ol>
+		<li>Next we'll add two variables to the PHP code at the top of each page, make sure to put these variables before the require() function call that links to header.inc.php</li>
+		<li>Open the home page in your editor (index.php - make sure it's NOT the index.php file in the blog folder)</li>
+		<li>Add a variable named <b>$pageTitle</b> and initialize it to an appropriate value, maybe something like: <b>Welcome to My Site</b></li>
+		<li>Add a variable named <b>$pageDescription</b> and initialize it to an appropriate value, maybe something like this: <b>Welcome to my website, it's about me, my hobbies, and web development</b></li>
+		<li>Your code should look like <a href="screen-shots/3-page-title-and-description-variables.png">this</a></li>
+		<li>Repeat the previous step for all the other web pages, make sure to initialize the variables to an appropriate string for each page. Make sure to update blog/index.php as well.</li>
+		<li>
+			Now we'll add some code to header.inc.php that will echo out the page title and description.
+			<br>
+			Update the code in header.inc.php to look like <a href="screen-shots/4-displaying-the-page-title-and-description.png">this</a>. Be careful with the syntax!
+		</li>
+		<li>
+			Test your pages to make sure the title and description are working for each page.
+			<br>
+			In the next step, we'll fix some of the other problems that we discussed earlier
+		</li>
+	</ol>
+
+	<h3>Part 5 - Fixing the Pictures and Contact Pages</h3>
+	<p>
+		The pictures page and the contact page depend on certain JavaScript code in order to work properly.
+		Normally, we'd put a <b>script</b> tag inside the <b>head</b> tag that would link to an external .js file. 
+		But we don't really want to put script tags that link to .js files in header.inc.php unless those .js files are used by
+		all the pages in our site. 
+	</p>
+	<p>
+		There are a few different ways we could solve this problem. The simplest solution is to put the appropriate script tags
+		inside of pictures.php and contact.php.
+	</p>
+	<ol>
+		<li>Open pictures.php and add a script tag that links to photo-gallery.js. Make sure that the script tag is placed somewhere after the PHP code that is at the top of the page.</li>
+		<li>Open contact.php and add a script tag that links to contact-form.js</li>
+		<li>
+			Test the pages to make sure they are working properly.
+			As mentioned, the blog home page is not working. Do you know why? 
+			We'll address the problems with the blog home page in the next step.
+		</li>
+	</ol>
+
+</body>
+</html>
