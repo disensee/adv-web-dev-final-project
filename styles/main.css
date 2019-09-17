@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css?family=Barlow|Barlow+Condensed');
+
+body{
+	font-family: Verdana;
+	font-size: 12px;
+}
+
+header{
+	background-color: purple;
+	height:60px;
+}
+
+header h1{
+	font-family: 'Barlow Condensed', sans-serif;
+	font-size: 30px;
+	color:white;
+	line-height: 60px;
+	padding-left: 20px;
+}
+
+nav {
+	/*height: 30px;*/
+	background-color: red;
+	color: white;
+}
+
+nav li{
+	display: inline;
+	list-style: none;
+}
+
+nav li a{
+	display: inline-block;
+	padding:10px;
+	color:white;
+
+}
+
+h1{
+	color: red;
+	font-size:140%;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+
+p{
+	line-height: 16px;
+	margin-bottom: 12px;
+}
+
+footer{
+	background-color: red;
+	color:white;
+	font-size: 85%;
+	padding: 10px;
+}
+
+main{
+	float:left;
+	width:70%;	
+}
+
+aside{
+	float:left;
+	width: 30%;
+}
+
+aside li{
+	margin:10px;
+}
+
+#content{
+	overflow: auto;
+}
+
+.content-frame{
+	margin: 20px;
+}
+
+.img-container{
+	width: 90%;
+	margin:auto;
+}
+
+.img-container img{
+	width:100%;
+}
+
+footer a{
+	color: white;
+}
+
+#mobile-nav-button{
+	position: absolute;
+    top:0px;
+    right:0px;
+    width:44px;
+    height:44px;
+    color:white;
+    font-size:28px;
+    font-weight: bold;
+    line-height: 44px;
+    text-align: center;
+    cursor:pointer;
+    display:none;
+}
+
+/*Contact Form*/
+.validation-message{ color: red; }
+
+/*Photo Gallery*/
+#btnPrev, #btnNext{
+  border:2px solid red;
+  background-color: purple;
+  border-radius: 4px;
+  padding:10px;
+  color:#ffffff;
+  font-weight: bold;
+}
+
+#image-gallery{
+  width:75%;
+}
+
+#image-gallery #mainImg{
+  width:100%;
+  border: 2px solid #333333;
+}
+
+/*MEDIA QUERIES*/
+@media all and (max-width : 800px) {
+
+	main,aside{
+		float:none;
+		width:100%;
+	}
+
+	nav{
+		display:none;
+	}
+
+	nav li{
+		display: block;
+	}
+
+	#mobile-nav-button{
+		display: block;
+	}
+
+	#image-gallery{
+  		width:100%;
+	}
+}
