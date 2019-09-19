@@ -1,4 +1,6 @@
 <?php
+$pageTitle = "Welcome to my site";
+$pageDescription = "Welcome to my webiste, it's about me, my hobbies, and web development";
 require("includes/header.inc.php")
 ?>
 		<main>

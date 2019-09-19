@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Welcome to My Site</title>
+	<title><?php echo($pageTitle); ?></title>
 	<meta charset="utf-8">
-	<meta name="description" content="Welcome to my website, it's about me, my hobbies, and web development">
+	<meta name="description" content="<?php echo($pageDescription); ?>">
     <meta name="viewport" content="width=device-width">
 	<link rel="stylesheet" type="text/css" href="styles/reset.css">
 	<link rel="stylesheet" type="text/css" href="styles/main.css">

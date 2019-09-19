@@ -1,4 +1,6 @@
 <?php
+$pageTitle = "Contact Me";
+$pageDescription = "Contact me. I'll get back to you ASAP.";
 require("includes/header.inc.php")
 ?>
 <script src="js/contact-form.js"></script>

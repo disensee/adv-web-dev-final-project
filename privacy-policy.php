@@ -1,4 +1,6 @@
 <?php
+$pageTitle = "Privacy Policy";
+$pageDescription = "I respect your privacy!";
 require("includes/header.inc.php")
 ?>
 		<main>

@@ -1,4 +1,6 @@
 <?php
+$pageTitle = "Pictures";
+$pageDescription = "Photo gallery";
 require("includes/header.inc.php")
 ?>
 <script src="js/photo-gallery.js"></script>
