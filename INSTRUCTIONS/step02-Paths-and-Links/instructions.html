@@ -1,0 +1,99 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Paths and Links</title>
+</head>
+<body>
+	<h1>Paths and Links</h1>
+	
+	<h3>Pre-Reqs</h3>
+	<ul>
+		<li>An undestanding of <b>absolute</b> and <b>relative</b> links</li>
+		<li>An understanding of the difference between the root directory of a computer vs. the doc root directory of the web server running on the computer (we'll discuss this a bit below)</li>
+		<li>An understanding of <b>doc root relative links</b> (we'll also discuss this a bit below)</li>
+	</ul>
+
+	<p>
+		You have already learned that when you install web server software, you must designate a folder to be the <b>doc root dir</b>.
+		All of your web pages must be placed in this folder in order for them to be visible on the web.
+		Note that unless your web server has a security problem, it should be impossible for a browser/client to view a page that is not in the doc root dir.
+		The doc root directory is the starting point for navigating a website.
+		If you type a server name into the url bar of your browser and press enter, the web server will look at the request and respond by sending the index.html (or .php) file that is inside the doc root dir
+		Note that <b>server name</b>, <b>domain name</b>, and <b>host name</b> all mean the same thing.
+		So, for example, if you entered <b>www.acme.com</b> into the url bar of your browser and press enter, a request would be sent to the web server that is known as www.acme.com. 
+		That server would then look directly inside its doc root dir for the default web page (which is often named index.html, or index.php).
+	</p>
+	<p>
+		In our case, the server name for our Apache web server (running on XAMPP) is <b>localhost</b>, but when you transfer your web pages over to your live server, the server name will be the domain name that you registered when you set up your web hosting plan with QTH.com.		
+	</p>
+	<p>
+		It's extremely important to understand that the root directory on a computer is not the same as the document root directory of the web server running on that computer.
+		If your computer runs Windows, the root directory is often something like <b>C:\</b>.
+		If you are familiar with Linux, the root directory is simply <b>/</b>.
+		So the path to your desktop on Windows, starting from the root directory might be something like <b>C:\Users\Bob\Desktop</b>.
+		On a Linux machine, the path to your desktop might look like this <b>/home/Bob/Desktop</b>.
+		Remember that we configured the <b>doc</b> root directory on our Apache server to be the public_html directory that we created on our desktop.
+	</p>
+	<p>
+		Why is all of this important? Because it's helpful to understand the difference between the root dir of a computer vs. the doc root dir of a web server
+		before we talk about <b>doc root relative links</b>.
+		You should already know about relative links when it comes to linking web pages. You should know that the starting point for a relative link depends on where your web page is located within the file structure of your site.
+		So if you wanted to add an <b>a</b> tag in the contact page that links to the default page in the blog folder, it would look like this: <b>blog/index.php</b>.
+		Likewise, if you wanted to add an <b>a</b> tag in the blog home page that links to the contact page, it would look like this <b>../contact.php</b>.
+		The starting point for the path is relative to the location of the file that has the <b>a</b> tag. 
+	</p>
+	<p>
+		There is another type of relative link that you can use in your web pages. It is known as a <b>doc root relative</b> link.
+		The starting point for a doc root relative link is always the doc root directory of the web server (hence the name 'doc root relative').
+		Doc root relative links always start with a forward slash.
+		So if we were to use a doc root relative link to link the contact page to the blog page, it would look like this: <b>/adv-web-dev/my-new-site/blog/index.php</b>.
+	</p>
+	<p>
+		The nice thing about doc root relative links is that the starting point is always the same (unlike regular relative links, where the starting point depends on the location of the file that is linking to another file). 
+	</p>
+	<p>
+		Finally, it's important to note that doc root relative links only apply to client-side links (that is, links in our HTML, CSS, and JavaScript code).
+		Since PHP runs on the server, if you tried to use a link a PHP file to an include file with a path that looked like this: /adv-web-dev/my-new-site/blog/index.php it could cause problems.
+		If PHP is running on a Linux server it would start the path from the computer's root directory. 
+		If PHP is running on a Windows server it's not a valid path (remember that the root dir on a Windows computer is often C:\). 
+	</p>
+	<p><b>You can use relative links in your PHP code, but you can't use doc root relative links in your PHP code</b></p>
+	<p>Let's go ahead and address some problems in our blog home page.</p>
+
+	<h3>Part 1 - Fixing the server-side links in the blog home page</h3>
+	<ul>
+		<li>
+			Open blog/index.php in your editor and fix the links in the PHP code.
+		</li>
+		<li> 
+			Add <b>../</b> to the begining of the path that links to header.inc.php.
+			<br>
+			<a href="screen-shots/1-link-to-header-from-blog-page.png">This</a> is what your link to header.inc.php should look like.
+		</li>
+		<li> 
+			Add <b>../</b> to the begining of the path that links to footer.inc.php.
+		</li>
+		<li>
+			View the page in the browser (remember to start the URL with <b>localhost</b>).
+			Note that you should no longer see any server-side errors (errors in the PHP code). 
+			But there are still some problems with the page, the links in the HTML code do not work. Can you figure out why?
+		</li>
+	</ul>
+
+	<h3>Part 2 - Fixing the links in the client-side code</h3>
+	<p>We'll change the client side links in the header and footer include files to be doc root relative</p>
+	<ul>
+		<li>Open header.inc.php and footer.inc.php in your editor</li>
+		<li>
+			Update the links to the .js file, the .css files, and the the links in the nav tag to use doc root relative links.
+			The paths. <a href="screen-shots/2-doc-root-rel-links-in-header.png">This</a> is what my header.inc.php file looks like after these changes.
+		</li>
+		<li>
+			In footer.inc.php, update the link to the privacy policy page to use a doc root relative link.
+		</li>
+		<li>Refresh the page in the browser. Then navigate around the pages to your site. Note that by using doc root relative links, are pages link properly to one another regardless of the location of the page that has the link in it.</li>
+		<li>We could update the link to the image in the side bar, but we'll do that soon.</li>
+	</ul>
+	
+</body>
+</html>
