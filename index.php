@@ -1,7 +1,8 @@
 <?php
+require_once("includes/config.inc.php");
 $pageTitle = "Welcome to my site";
 $pageDescription = "Welcome to my webiste, it's about me, my hobbies, and web development";
-require("includes/header.inc.php")
+require("includes/header.inc.php");
 ?>
 		<main>
 

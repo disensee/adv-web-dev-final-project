@@ -5,9 +5,9 @@
 	<meta charset="utf-8">
 	<meta name="description" content="<?php echo($pageDescription); ?>">
     <meta name="viewport" content="width=device-width">
-	<link rel="stylesheet" type="text/css" href="/my-new-site/styles/reset.css">
-	<link rel="stylesheet" type="text/css" href="/my-new-site/styles/main.css">
-	<script type="text/javascript" src="/my-new-site/js/main.js"></script>
+	<link rel="stylesheet" type="text/css" href="<?php echo(PROJECT_DIR); ?>styles/reset.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo(PROJECT_DIR); ?>styles/main.css">
+	<script type="text/javascript" src="<?php echo(PROJECT_DIR); ?>js/main.js"></script>
 </head>
 <body>
 	<header>
@@ -15,10 +15,10 @@
 	</header>
 	<nav id="main-nav">
 		<ul>
-			<li><a href="/my-new-site/index.php">Home</a></li>
-			<li><a href="/my-new-site/pictures.php">Pictures</a></li>
-			<li><a href="/my-new-site/blog/index.php">Blog</a></li>
-			<li><a href="/my-new-site/contact.php">Contact</a></li>
+			<li><a href="<?php echo(PROJECT_DIR); ?>index.php">Home</a></li>
+			<li><a href="<?php echo(PROJECT_DIR); ?>pictures.php">Pictures</a></li>
+			<li><a href="<?php echo(PROJECT_DIR); ?>blog/index.php">Blog</a></li>
+			<li><a href="<?php echo(PROJECT_DIR); ?>contact.php">Contact</a></li>
 		</ul>
 	</nav>
 	<div id="content">

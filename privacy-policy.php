@@ -1,7 +1,8 @@
 <?php
+require_once("includes/config.inc.php");
 $pageTitle = "Privacy Policy";
 $pageDescription = "I respect your privacy!";
-require("includes/header.inc.php")
+require("includes/header.inc.php");
 ?>
 		<main>
 

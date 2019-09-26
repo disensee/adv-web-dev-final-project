@@ -1,9 +1,10 @@
 <?php
+require_once("includes/config.inc.php");
 $pageTitle = "Pictures";
 $pageDescription = "Photo gallery";
-require("includes/header.inc.php")
+require("includes/header.inc.php");
 ?>
-<script src="js/photo-gallery.js"></script>
+<script src="<?php echo(PROJECT_DIR); ?>js/photo-gallery.js"></script>
 		<main>
 
 			<div class="content-frame">

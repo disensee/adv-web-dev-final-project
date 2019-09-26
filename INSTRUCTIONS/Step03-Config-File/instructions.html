@@ -1,0 +1,125 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Paths and Config Files</title>
+</head>
+<body>
+	<h1>Config Files</h1>
+	
+	<h3>Pre-Reqs</h3>
+	<ul>
+		<li>Understanding of PHP constants (and the define() function).</li>
+		<li>Understanding of PHP super global arrays and the $_SERVER['SERVER_NAME'] variable.</li>
+	</ul>
+
+	<h3>Part 1 - Making our new website portable by using a config file</h3>
+	<p>
+		In the previous step of the project, we used <b>doc root relative</b> links to solve some of the problems of using PHP include files.
+		But this presented a new problem. We hard-coded the 'my-new-site' folder into each of the links.
+		This is duplicated in every link (about 10 places throughout the site).
+		If we decided to change the name of the project folder from 'my-new-site' to something else, then the links would be broken and we'd have to go through the code and change each occurence of 'my-new-site' in the links.
+		<b>Programmers need to deal with changing environments in a flexible manner!</b>
+		In this step, we'll create a 'config' file and use variables that will allow us to migrate our site from one environment (server) to another without the headache of updating links all over the place.
+	</p>
+	<p>
+		Many types of applications make use of a <b>config file</b> (short for 'configuration') which acts as a central location for settings that are used when the app is running.
+		Other files in the app can 'include' This file to get the settings. 
+		Many of the settings in the config file provide information about the environment in which the app is running.
+		For example, in the development environment, we would want to display all error messages to help us with debugging.
+		But in a live environment, we never want to display error messages. 
+	</p>
+	<p>
+		In this step, we'll create a config file that automatically detects the environment in which the app is running.
+		It will then provide settings for a live envirnoment and a development environment.
+	</p>
+	<h3>Part 1 - Creating the config file</h3>
+	<ol>
+		<li>
+			<p>Create a file in the <b>includes</b> folder and name it <b>config.inc.php</b>.</p>
+		</li>
+		<li>
+			<p>Add <a href="screen-shots/1-config-file.png">this</a> code to the file.</p>
+			<p>
+			First note that the IF statement detects the server name by using the PHP $_SERVER super global array.
+			If the server name is 'localhost', then we set the PROJECT_DIR constant to certain '/my-new-site/' (this is the path to the folder that contains our project files, notice that it's a doc root relative path).
+			The ELSE block of code sets the constant to "/", because when we migrate our new site to the live web server, we'll want the files placed directly into the doc root directory.
+			</p>
+			<p>
+			You may have noticed something that looks a bit strange in the config file, that it's missing the closing php tag <b>?&gt;</b>.
+			If you create a PHP include file that consists of only PHP code (no HTML, CSS, or JavaScript), then you can avoid some strange issues by note putting the <b>?&gt;</b> at the end of the file.
+			We'll learn more about this when discuss HTTP headers.
+			</p>
+			<p>Note that as we continue to work on this project, we'll be adding quite a few settings to our config file (and some other code as well).</p>
+		</li>
+		<li>
+			<p>
+				We want every page in our site to link to the config file so that every page has access to the settings in it. 
+				So we will individually link each page to config.inc.php, luckily we don't have too many pages to update at this point.
+				You might be inclined to put the link to the config file in header.inc.php, since all of our pages are already linking to it.
+				If we took this approach, we would only have to update header.inc.php by adding the link to config.inc.php.
+				But it's better to put the link to the config file at the very top of every page. 
+				The reason for this is that we want to make the configuration settings available as soon as possible in every page.
+				Often times, PHP pages have quite a bit of PHP code in them before any HTML tags, so by linking to the config file at the top of the page, before any other PHP code, the settings will be available to any code that comes after it.  
+			</p>
+			<p>	
+				Go ahead and link each page in the site to the config file by adding <a href="screen-shots/2-linking-to-the-config-file.png">this</a> line at the top of each page (just after the <b>&lt;?php</b>).
+				Don't forget about the blog home page, and make sure to adjust the path to config.inc.php by adding <b>../</b> at the beginning. 
+				Note that we are using the <b>require_once()</b>, instead of the <b>require()</b> function.
+				The reason for using the require_once() function instead of just require() is that many files in our project may need to link to the config file.
+				So if we happen to link to another include file in this page that also links to the config file, then it may be included more than once, which could cause problems.
+				By using require_once() to link to a file, PHP will detect if the config file has already been included and make sure that it only happens once. 
+			</p>
+		</li>
+		<li>
+			<p>
+				Now all of our pages will be able to make use of the PROJECT_DIR setting in the config file.
+				And since all of our pages link to header.inc.php after linking to the config file, the header include file will also have access to the configuration settings.
+				We'll start off by updating all the client-side links in the header.inc.php to make use of the PROJECT_DIR constant. 
+			</p>
+			<p>
+				Open header.inc.php and update all the links (that is, links to CSS and JS as well as the links to other pages that are in the nav bar).
+				We will replace all occurences of <b>/my-new-site/</b> with this:
+				<br>
+				<b>&lt;?php echo(PROJECT_DIR); ?&gt;</b>
+				<br>
+				The code in header.inc.php should look like <a href="screen-shots/3-header-include-file.png">this</a>.
+			</p>
+			<p>
+				It might seem strange to sprinkle little bits of PHP code among the HTML tags, and some programmers refer to the mixture of code as <b>spaghetti code</b>.
+				I actually struggled with this quite a bit when I was learning PHP. But I have since learned that this is exactly how PHP was intended to be used.
+			</p>
+		</li>
+		<li>
+			<p>
+			Take a look at your web pages in the browser. If you did things correctly, then you won't notice any differences in the browser.
+			But we have taken a very important step by making the site more dynamic. The site now dynamically detects which environment it's running in and can automatically change it's configuration settings.
+			</p>
+		</li>
+		<li>Now update the link in footer.inc.php (to the privacy-policy page) so that it uses the PROJECT_DIR constant at the beginning of the path instead of /my-new-site/.</li>
+		<li>Update the links to .js files in the pictures and contact page, so that they make use of the PROJECT_DIR setting.</li>
+		<li>Take s few minutes to test the pages in the browser.</li>
+		<li>
+			<p>
+			Let's add one more setting in our config file. We'll add a constant called IMAGES_DIR and when we set it's value, we'll make use of PROJECT_DIR.
+			Your config file should now look like <a href="screen-shots/4-updated-config-file.png">this</a>.
+			</p>
+			<p>
+				You could also add settings for other folders in the project (for example the 'js' and 'styles' folders), but we'll leave things as they are right now.
+			</p>
+		</li>
+		<li>
+			<p>
+				Open the home page for the site (index.php) in your editor and find the path to the image that is displayed inside the <b>main</b> tag so that it uses the IMAGES_DIR constant, like <a href="screen-shots/5-image-path.png">this</a>.
+			</p>
+			<p>
+				IS THERE A LINK TO AN IMAGE IN THE SIDE BAR OF THE BLOG HOME PAGE THAT WE NEED TO FIX?
+			</p>
+			<p>
+				Now, whenever you add a new image to a web page, you should try to make use of the IMAGES_DIR when setting up the link.
+				If for some reason we needed to restructure our site files, it will be much easier to update the IMAGES_DIR value than to go through all the pages and update links to images manually.
+			</p>
+		</li>
+	</ol>
+
+</body>
+</html>
