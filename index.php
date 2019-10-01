@@ -9,7 +9,7 @@ require("includes/header.inc.php");
 			<div class="content-frame">
 				<h1>About Me</h1>
 				<div class="img-container">
-					<img src="images/Desert.jpg" alt="A desert!">
+					<img src="<?php echo(IMAGES_DIR); ?>Desert.jpg" alt="A desert!">
 				</div>
 				<p>
 					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -39,7 +39,7 @@ require("includes/header.inc.php");
 					<li>Coding</li>
 				</ol>
 				<div class="img-container">
-					<img src="images/Lighthouse.jpg" alt="A lighthouse">
+					<img src="<?php echo(IMAGES_DIR); ?>Lighthouse.jpg" alt="A lighthouse">
 				</div>
 			</div>
 		</aside>

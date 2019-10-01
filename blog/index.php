@@ -23,7 +23,7 @@ require("../includes/header.inc.php");
 					<li>Coding</li>
 				</ol>
 				<div class="img-container">
-					<img src="../images/Lighthouse.jpg" alt="A lighthouse">
+					<img src="../<?php echo(IMAGES_DIR); ?>Lighthouse.jpg" alt="A lighthouse">
 				</div>
 			</div>
 		</aside>
