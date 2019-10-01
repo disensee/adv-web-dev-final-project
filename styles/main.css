@@ -57,7 +57,12 @@ footer{
 
 main{
 	float:left;
-	width:70%;	
+	width:70%;
+	background-color: yellow;	
+}
+
+#content.single-column main{
+	width:100%;
 }
 
 aside{

@@ -1,3 +1,8 @@
+<?php
+
+$contentClass = empty($sideBar) ? "single-column" : "";
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,4 +26,4 @@
 			<li><a href="<?php echo(PROJECT_DIR); ?>contact.php">Contact</a></li>
 		</ul>
 	</nav>
-	<div id="content">
+	<div id="content" class="<?php echo($contentClass); ?>">

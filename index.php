@@ -2,6 +2,7 @@
 require_once("includes/config.inc.php");
 $pageTitle = "Welcome to my site";
 $pageDescription = "Welcome to my webiste, it's about me, my hobbies, and web development";
+$sideBar = "hobbies-sidebar.inc.php";
 require("includes/header.inc.php");
 ?>
 		<main>
@@ -30,20 +31,11 @@ require("includes/header.inc.php");
 			</div>
 			
 		</main>
-		<aside>
-			<div class="content-frame">
-				<h3>My Hobbies</h3>
-				<ol>
-					<li>Music</li>
-					<li>Guitar</li>
-					<li>Coding</li>
-				</ol>
-				<div class="img-container">
-					<img src="<?php echo(IMAGES_DIR); ?>Lighthouse.jpg" alt="A lighthouse">
-				</div>
-			</div>
-		</aside>
 <?php
+if(!empty($sideBar)){
+	require("includes/" . $sideBar);
+}
+
 require("includes/footer.inc.php")
 ?>
 

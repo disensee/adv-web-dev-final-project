@@ -2,6 +2,7 @@
 require_once("includes/config.inc.php");
 $pageTitle = "Contact Me";
 $pageDescription = "Contact me. I'll get back to you ASAP.";
+$sideBar = "hobbies-sidebar.inc.php";
 require("includes/header.inc.php");
 ?>
 <script src="<?php echo(PROJECT_DIR); ?>js/contact-form.js"></script>
@@ -53,20 +54,11 @@ require("includes/header.inc.php");
 			</div>
 			
 		</main>
-		<aside>
-			<div class="content-frame">
-				<h3>My Hobbies</h3>
-				<ol>
-					<li>Music</li>
-					<li>Guitar</li>
-					<li>Coding</li>
-				</ol>
-				<div class="img-container">
-					<img src="images/Lighthouse.jpg" alt="A lighthouse">
-				</div>
-			</div>
-		</aside>
 <?php
+if(!empty($sideBar)){
+	require("includes/" . $sideBar);
+}
+
 require("includes/footer.inc.php")
 ?>
 
