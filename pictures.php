@@ -5,7 +5,7 @@ $pageDescription = "Photo gallery";
 $sideBar = "hobbies-sidebar.inc.php";
 require("includes/header.inc.php");
 ?>
-<script src="<?php echo(PROJECT_DIR); ?>js/photo-gallery.js"></script>
+<script src="<?php echo(PROJECT_DIR); ?>js/photo-gallery.js"></script> 
 		<main>
 
 			<div class="content-frame">
