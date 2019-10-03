@@ -1,0 +1,93 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Debugging</title>
+</head>
+<body>
+	<h1>Custom Error Handling and Debugging</h1>
+	<p>
+		In our development environment we want to see all error details in the browser, but on the live site we don't want users seeing them.
+		Instead we want them to see a 'friendly' message, and we want the ugly details of the error to be emailed to us (so that we are aware that an error occured on the live site).
+		In this step, we'll set up custom error handling.
+	</p>
+	<ol>
+		<li>
+			<p>
+				Update the config file (config.inc.php) to look like <a href="screen-shots/1-config-file.png">this</a>.
+			</p>
+			<p>
+				We've added some new constants to our config file, DEBUG_MODE and ADMIN_EMAIL
+			</p>
+			<ul>
+				<li>Set <b>ADMIN_EMAIL</b> to be your email address.</li>
+				<li>Set <b>DEBUG_MODE</b> to true for localhost and false for the live site settings.</li>
+			</ul>
+			<p>
+				The reason for DEBUG_MODE is that sometimes we do want to display error messages on the live site,
+				for example if we there is an error occurring on the live site, but not on dev.
+				In that case, we can simply change DEBUG_MODE to true for the live site settings.
+				Notice that we've added an IF statement that checks to see if we are in debug mode, 
+				if so we want PHP to display all error messages.
+				Make sure to set ADMIN_EMAIL to your own email address.
+			</p>
+		</li>
+		<li>
+			<p>
+				Now we are going to add a few functions to the config file. 
+				Functions defined in the config file will be available to all web pages.
+			</p>
+			<ul>
+				<li>
+					First add sendEmail() which will be a 'wrapper' function for the built-in mail() function in PHP.
+					<br>
+					<a href="screen-shots/2-sendEmail.png">This</a> is what the function should look like.
+					<br>
+					Put the function at the bottom of the config file, note that I have put a comment between the functions and the rest of the code above.
+					We could just use the mail() function when we want to send an email from a page, but instead will
+					call sendEmail(). This gives us the flexibilty to update the sendEmail() function in the future without
+					having to update all pages that may have otherwised used mail();
+					<br><br>
+				</li>
+				<li>
+					Now we'll add our own custom error handler function and after that we'll set it to be the function that PHP calls when it encounters an error.
+					<br>
+					<a href="custom-error-function.txt">Here</a> is the code.
+					<br>
+					Note that if we are in debug mode, and error is displayed in the browser, otherwise the error message is sent to the ADMIN_EMAIL address and we redirect the user to a page that displays a 'friendly' error message.
+					Don't forget the code that calls set_error_handler(), this will tell PHP to invoke customErrorHandler() when an error occurs.
+					We'll create the error.php page next.
+				</li>
+			</ul>
+		</li>
+		<li>
+			<h3>Adding an Error Page</h3>
+			<p>
+			Create a file inside the 'my-new-site' folder named <b>error.php</b>.
+			You can copy the contents of the site home page into it and then make the following changes:
+			</p>
+			<ul>
+				<li>Update the page specific variables ($pageTitle, $pageDescription, $sideBar).</li>
+				<li>
+					Update the content within the <b>main</b> tag so that it displays a friendy message
+					make sure that you mention that you have been notified of the error and will fix it asap.
+				</li>
+			</ul>
+		</li>
+		<li>
+			<h3>Test It!</h3>
+			<p>
+			Go ahead and generate an error in the code of the site's home page (echo a variable that doesn't exist).
+			You should see your custom error handling function.
+			</p>
+			<p>
+			At this point you should push the files to your live server and make sure that you see the 'friendly' error page, and make sure you get the error email.
+			</p>
+			<p>
+				SIDE NOTE: I did not add a SERVER error header to the error page. 
+				Normally whan an error occurs on the web server, we should technically return a HTTP status code of 500.
+				We'll talk more about http headers later in the course.
+			</p>
+		</li>
+	</ol>
+</body>
+</html>
