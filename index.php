@@ -38,5 +38,3 @@ if(!empty($sideBar)){
 
 require("includes/footer.inc.php")
 ?>
-
-

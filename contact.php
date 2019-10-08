@@ -4,6 +4,35 @@ $pageTitle = "Contact Me";
 $pageDescription = "Contact me. I'll get back to you ASAP.";
 $sideBar = "hobbies-sidebar.inc.php";
 require("includes/header.inc.php");
+
+if($_SERVER['REQUEST_METHOD'] == "POST"){
+	// Get the data entered by the user
+	$firstName = isset($_POST['txtFirstName']) ? $_POST['txtFirstName'] : NULL;	
+	$lastName = isset($_POST['txtLastName']) ? $_POST['txtLastName'] : NULL;	
+	$email = isset($_POST['txtEmail']) ? $_POST['txtEmail'] : NULL;	
+	$comments = isset($_POST['txtComments']) ? $_POST['txtComments'] : NULL;
+
+	if(validateContactData($firstName, $lastName, $email, $comments)){
+
+		// If the data is valid, then put it into a single string to send as an email 
+		$msg = "Name: $firstName $lastName <br>";
+		$msg .= "Email: $email <br>";
+		$msg .= "Comments: $comments";  
+		
+		sendEmail(ADMIN_EMAIL, "Contact Form", $msg , "From: " . $email); // NOTE: we can uncomment the third param after we update the sendEmail() function!!!
+		header("Location: " . PROJECT_DIR . "contact-confirmation.php");
+		exit();	
+		
+	}else{
+
+		// Foul play suspected (the client-side validation has been bypassed)!
+		$msg = getAllSuperGlobals(); 
+		sendEmail(ADMIN_EMAIL, "Security Warning!", $msg);
+		header("Location: " . PROJECT_DIR . "error.php");
+		exit();	
+	}
+
+}
 ?>
 <script src="<?php echo(PROJECT_DIR); ?>js/contact-form.js"></script>
 		<main>
@@ -59,7 +88,23 @@ if(!empty($sideBar)){
 	require("includes/" . $sideBar);
 }
 
-require("includes/footer.inc.php")
+require("includes/footer.inc.php");
+
+////////////////////////////
+//Functions for this page//
+//////////////////////////
+
+function validateContactData($firstName, $lastName, $email, $comments){
+	if(empty($firstName) || empty($lastName) || empty($comments) || empty($email)){
+		return false;
+	}
+
+	if(filter_var($email, FILTER_VALIDATE_EMAIL) == FALSE){
+		return false;
+	}
+
+	return true;
+}
 ?>
 
 
