@@ -47,6 +47,7 @@ function sendEmail($to, $subject, $msg, $headers=""){
 			return false;
 		}
 	}
+	return true;
 }
 // Instead of using the defualt PHP error handler function that gets called
 // when and error occurs, we want this function to be called
