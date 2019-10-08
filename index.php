@@ -4,7 +4,6 @@ $pageTitle = "Welcome to my site";
 $pageDescription = "Welcome to my webiste, it's about me, my hobbies, and web development";
 $sideBar = "hobbies-sidebar.inc.php";
 require("includes/header.inc.php");
-echo($foo);
 ?>
 		<main>
 

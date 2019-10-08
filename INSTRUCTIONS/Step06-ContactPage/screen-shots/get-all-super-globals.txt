@@ -1,0 +1,18 @@
+// Dumps all super globals to help us with debugging
+function getAllSuperGlobals(){
+
+	$str = "<br>POST VARS:<br>" . print_r($_POST, true);
+	$str .= "<br>GET VARS:<br>" .  print_r($_GET, true);
+	$str .= "<br>SERVER VARS:<br>" .   print_r($_SERVER, true);
+	$str .= "<br>FILE VARS:<br>" .  print_r($_FILES, true);
+	$str .= "<br>COOKIE VARS:<br>" .  print_r($_COOKIE, true);
+	$str .= "<br>REQUEST VARS:<br>" .  print_r($_REQUEST, true);
+	$str .= "<br>ENV VARS:<br>" .  print_r($_ENV, true);
+
+	// Only include the SESSION super global if the site is using sessions
+	if(isset($_SESSION)){
+		$str .= "<br>SESSION VARS:<br>" .  print_r($_SESSION, true);
+	}
+
+	return $str;
+}

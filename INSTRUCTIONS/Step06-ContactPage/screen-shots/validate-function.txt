@@ -1,0 +1,16 @@
+///////////////////////////
+// Functions for this page
+///////////////////////////
+
+function validateContactData($firstName, $lastName, $email, $comments){
+	
+	if(empty($firstName) || empty($lastName) || empty($comments) || empty($email)){
+		return false;
+	}
+
+	if(filter_var($email, FILTER_VALIDATE_EMAIL) === false){
+		return false;
+	}
+
+	return true;
+}

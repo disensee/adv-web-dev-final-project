@@ -1,0 +1,93 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Contact Page</title>
+</head>
+<body>
+	<h1>Contact Page</h1>
+	<p>
+		In this step we will incorporate server-side input validation into the form on the contact page.
+		Here's the algorithm we'll follow:
+	</p>	
+	<ol>
+		<li>Get the data entered by the user (from the $_POST)</li>
+		<li>
+			If the data is valid:
+			<ol>
+				<li>Send an email to the site adminstrator with the data.</li>
+				<li>Redirect to a page that confirms to the user that the contact information has been sent.</li>
+			</ol>
+		</li>
+		<li>
+			If the data is NOT valid:
+			<ol>
+				<li>
+					Send an email to the site admin notifying of a security issue
+			   		(if the data is not valid, then the JavaScript validation code has been bypassed)!!!!!
+				</li>
+			</ol>
+		</li>
+	</ol>
+	<p>
+		To complete this task, follow these steps:
+	</p>
+	<ol>
+		<li>Open the contact page in your editor.</li>
+		<li>
+			Add <a href="screen-shots/if-statement.txt" target="_blank">this</a> code to the PHP code at the top of the contact page, 
+			just after the $sideBar variable and before the line that links to the header.inc.php file
+			Note that there are two functions being called that we have not yet defined. 
+			We'll define validateContactData() at the bottom of the contact page next.
+			We'll put the other function,  getAllSuperGlobals(),  in the config file. 
+			This will allow it to be used by other pages in the site.
+			Finally, note that after sending the contact details in an email, we redirect to a page that will tell the user that we received the information.
+			We'll create that page in a moment. 
+		</li>
+		<li>
+			Add <a href="screen-shots/2-validate-function.png">this</a> PHP code for the validateContactData() function, put the code just under the link to the footer.inc.php file
+			Note that validateContactData() returns true if the user input is valid. 
+			If it returns false, then we suspect that there has been some sort of foul play becuase the client-side code (JS validation) should have prevented the user from entering invalid data.
+			So it's likely that a spam bot is sending POST requests to this page and bypassing the client-side validation.
+			Beware that you are likely to get quite a few security warning emails. 
+			We'll work on preventing spam emails later.
+			But for now, <b>whenever you suspect foul play, you want to capture as much data as you can about the nature of the request</b>.
+			And that's what we'll do when we define getAllSuperGlobals() in the config file.
+		</li>
+		<li>
+			Open the config file and add <a href="screen-shots/get-all-super-globals.txt" target="_blank">this</a> code to the bottom of the page.
+			It captures all the data from the super global arrays and returns a single string that we can use to send in an email.
+		</li>
+		<li>
+			Now let's create contact-confirmation.php. Put it in the 'my-new-site' folder.
+			You can copy code from the home page and then make the appropriate updates, just as we did when we created error.php.
+		</li>
+		<li>
+			Test the site on your dev and live server
+		</li>
+	</ol>
+	<h3>OPTIONAL (MAYBE NOT OPTIONAL, NO NOT OPTIONAL!)</h3>
+	<p>I went back and made some changes after thinking about things a bit!</p>
+	<ol>
+		<li>
+			I updated code in sendEmail to allow html emails and I made an update in contact.php to set the FROM header.
+			Seems to be working, but not well tested.
+		</li>
+		<li>
+			<a href="screen-shots/send-email-updated.txt" target="_blank">Here's sendEmail()</a>. 
+			Seems weird how you have to use single and double quotes when concatenating the string, but that's how I got it to work (need to look into that).
+			You can read more about about sending emails from PHP in your book!
+		</li>
+		<li>
+			<a href="screen-shots/5-update-to-contact.png">Here's the change to contact.php (notice the last param on line 22)</a>
+			You just need to uncomment the third param in that function call in the code that you already have.
+		</li>
+		<li>
+			I also updated the custom error handler to include super globals when it sends the email <a href="screen-shots/6-update-to-customError-function.png">see line 69</a>
+		</li>
+
+	</ol>
+
+</body>
+</html>
+
+
