@@ -11,7 +11,7 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
     define("ADMIN_EMAIL", "isenseed@students.westerntc.edu");
 }else{
     //settings for live site
-    define("PROJECT_DIR", "/");
+    define("PROJECT_DIR", "/my-new-site/");
     define("IMAGES_DIR", PROJECT_DIR . "images/");
     define("DEBUG_MODE", true);
     define("ADMIN_EMAIL", "isenseed@students.westerntc.edu");
