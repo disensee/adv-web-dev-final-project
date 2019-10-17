@@ -8,13 +8,21 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
     define("PROJECT_DIR", "/my-new-site/");
     define("IMAGES_DIR", PROJECT_DIR . "images/");
     define("DEBUG_MODE", true);
-    define("ADMIN_EMAIL", "isenseed@students.westerntc.edu");
+	define("ADMIN_EMAIL", "isenseed@students.westerntc.edu");
+	define("DB_HOST", "localhost");
+	define("DB_USER", "root");
+	define("DB_PASSWORD", "");
+	define("DB_NAME", "my-new-site");
 }else{
     //settings for live site
     define("PROJECT_DIR", "/my-new-site/");
     define("IMAGES_DIR", PROJECT_DIR . "images/");
     define("DEBUG_MODE", true);
-    define("ADMIN_EMAIL", "isenseed@students.westerntc.edu");
+	define("ADMIN_EMAIL", "isenseed@students.westerntc.edu");
+	define("DB_HOST", "xxxxxx");
+	define("DB_USER", "xxxxxx");
+	define("DB_PASSWORD", "xxxxxx");
+	define("DB_NAME", "my-new-site");
 }
 //turn errors on if debug mode is true (code running on localhost)
 if(DEBUG_MODE){
@@ -89,4 +97,23 @@ function getAllSuperGlobals(){
 	}
 
 	return $str;
+}
+//this is our connection object for connecting to the database
+$link = null;
+
+//creates the connection/link object (if it has not already been created)
+function getDBLink(){
+
+	global $link;
+
+	if($link == null){
+
+		$link = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+		if(!$link){
+			throw new Exception(mysqli_connect_error());
+		}
+	}
+
+	return $link;
 }
