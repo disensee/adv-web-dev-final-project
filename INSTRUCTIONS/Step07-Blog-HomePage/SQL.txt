@@ -1,0 +1,41 @@
+#PAGES TABLE
+
+DROP TABLE IF EXISTS pages;
+CREATE TABLE IF NOT EXISTS pages (
+  pageId int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  path varchar(255) NOT NULL,
+  title varchar(30) NOT NULL,
+  description varchar(255) NOT NULL,
+  content TEXT NOT NULL,
+  publishedDate DATE NOT NULL,
+  categoryId int(11),
+  active enum('yes','no') NOT NULL DEFAULT 'yes'
+) ENGINE=InnoDB;
+
+
+
+
+#CATEGORIES TABLE
+
+DROP TABLE IF EXISTS categories;
+CREATE TABLE IF NOT EXISTS categories (
+  categoryId int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  name varchar(100) NOT NULL,
+  active enum('yes','no') NOT NULL DEFAULT 'yes'
+) ENGINE=InnoDB;
+
+# NOTE: I did not set up categoryId in the pages table to be a foreign key, yet.
+
+#Insert a test category
+INSERT INTO categories (categoryId, name, active) VALUES (NULL, 'Test Category', 'yes');
+
+#Insert another test category
+INSERT INTO categories (categoryId, name, active) VALUES (NULL, 'Another Test Category', 'yes');
+
+# Insert a test blog post
+INSERT INTO pages (pageId, path, title, description, content, publishedDate, categoryId, active) VALUES 
+(NULL, 'test-blog.php', 'This is a test blog post', 'This is the description for the test blog post.', 'This is the content for the test blog post.', '2018-06-25', 1, 'yes');
+
+# Insert another test blog post
+INSERT INTO pages (pageId, path, title, description, content, publishedDate, categoryId, active) VALUES 
+(NULL, 'another-test.php', 'Another Test Blog Post', 'Description for another test blog post.', 'This is the content for another test blog post.', '2018-06-26', 1, 'no');
