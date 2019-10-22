@@ -1,0 +1,144 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Blog Post Page</title>
+</head>
+<body>
+	<h1>Blog Post Page</h1>
+	
+	<h3>Pre-Reqs</h3>
+	<ul>
+		<li>Understanding of URL query string parameters and the $_GET super global array in PHP</li>
+		<li>Understanding of 404 pages and headers</li>
+		<li>Understanding of SQL injection attacks</li>
+	</ul>
+	<p>
+		In this step, we'll create a single PHP page that can display any blog post (very dynamic!).
+		Before we start on that page, we'll need to add some more code to our PageDataAccess class.
+	</p>
+
+	<h3>Updating the PageDataAccess class</h3>
+	<ul>
+		<li>
+			Open PageDataAccess.inc.php and add this method to it:
+			<pre>
+// Get a page by it's id
+function getPageById($id){
+
+	// prevent SQL injection attack by 'scrubbing' the $id
+	$id = mysqli_real_escape_string($this->link, $id);
+
+	$qStr = "SELECT 
+				pageId, 
+				path, 
+				title,
+				description,
+				content,
+				categories.categoryId, 
+				categories.name as categoryName,
+				DATE_FORMAT(publishedDate,'%m/%e/%Y') as publishedDate, 
+				pages.active 
+			FROM pages
+			INNER JOIN categories on pages.categoryId = categories.categoryId
+			WHERE pageId = {$id}";
+
+	$result = mysqli_query($this->link, $qStr) or $this->handleError(mysqli_error($this->link));
+
+	if(mysqli_num_rows($result) == 1){
+		$row = mysqli_fetch_assoc($result);
+		$page = array();
+		$page['pageId'] = htmlentities($row['pageId']);
+		$page['path'] = htmlentities($row['path']);
+		$page['title'] = htmlentities($row['title']);
+		$page['description'] = htmlentities($row['description']);
+		$page['content'] = $row['content']; // Note that we are not using htmlentities() here!!!
+		$page['categoryId'] = htmlentities($row['categoryId']);
+		$page['categoryName'] = htmlentities($row['categoryName']);
+		$page['publishedDate'] = htmlentities($row['publishedDate']);
+		$page['active'] = htmlentities($row['active']);
+		return $page;
+	}else{
+		return false;
+	}
+}
+			</pre>
+			Note that we are not using htmlentities() on the content column. We talk about that soon.
+		</li>
+		<li>
+			Open <b>page-data-access-tests.php</b> and add <a href="screen-shots/1-test-code.png">this</a> code to it. 
+		</li>
+		<li>
+			Open the test page in the browser to make sure it's properly fetching a blog page.
+			Note that the code also verifies that if there is an error in the SQL statement, the handleError() method is invoked.
+			Also note that we have confirmed that the handleError() method is throwing an exception, just as it should do.
+			We caught the exception with our test code.
+		</li>
+	</ul>
+	<h3>Create a 404 page</h3>
+	<ul>
+		<li>Inside the <b>my-new-site</b> folder, create a page named <b>404.php</b></li>
+		<li>You can copy code from another page and then make changes if you want, but the page should look something like <a href="404-page.txt">this</a> when you are done.</li>
+	</ul>
+	<h3>Add another global function to the config file (it will redirect users to  a 'page not found' page)</h3>
+	<ul>	
+		<li>Add <a href="screen-shots/3-redirect.png">this</a> function to the bottom of the config file.</li>
+	</ul>
+	<h3>Create the Blog Post Page</h3>
+	<ul>
+		<li>Inside the <b>blog</b> folder, create a page called <b>blog-post.php</b></li>
+		<li>Set up the page to look like <a href="blog-post.txt">this</a></li>
+		<li>Test out the blog post page by first going to the blog home page.</li>
+		<li>Try playing around the pageId url query string parameter to make sure the the page is properly redirecting to the 404 page.</li>
+	</ul>
+
+	<h3>Allowing Markup in the Page Content</h3>
+	<p>
+		Notice in the getPageId() method that we are not 'scrubbing' the content column when fetching
+		a post from the database (by using htmlentities()). 
+		The reason for this is that we want to allow SOME tags to be included in the content. 
+	</p>
+	<ul>
+		<li>Open PHPMyAdmin and update the active post to include some html markup.</li>
+	</ul>
+
+	<h3>Preventing XSS Atacks</h3>
+	<p>
+		Take a look at the getPageById() method that we created earlier and note that 
+		we are not using htmlentities() on the 'content' when we fetch it from the database.
+		The reason for this, is that we want to allow you to add <b>some</b> HTML tags so that you structure/style the content on your blog posts.
+		But this opens a huge security vulnerability in our code. 
+	</p>
+	<p>
+		Now would be a good time for me to demonstrate a <b>cross-site scripting attack</b>
+		and then I'll show you how we can try to prevent them from happening.
+		If a hacker finds a way to insert/update certain information into your database, he/she might be able to pull off an XSS attack.
+		Right now, it may be difficult for hackers to get to the database, but we will soon be creating PHP pages
+		that might give them some opportunities.
+		So let's go ahead and deal with the problem now.
+	</p>
+	<ul>
+		<li>
+			Add <a href="sanitize-html.txt">this</a> function to the config file.
+			It would be a really good exercise in learning PHP to pick this function apart, and understand what it does!
+		</li>
+		<li>
+			Now go back to the getPageById() method and 'wrap' the content coming from the database like <a href="screen-shots/4-sanitizing-the-content.png">this</a>.
+		</li>
+	</ul>
+
+	<h3>Follow Up Questions:</h3>
+	<ul>
+		<li>What are HTTP headers?</li>
+		<li>What is the purpose of a 404 status code header?</li>
+		<li>What are some other HTTP status codes?</li>
+		<li>What is the purpose of the mysqli_real_escape_string() function? (Not sure if this is a fair question at this point in the course)</li>
+		<li>What are the SEO implications of using a single page to display all blog posts?</li>
+		<li>What happens if you try to view a blog page that is not 'active' (the 'active' column for the row is set to 'no')?</li>
+		<li>What is an XSS attack?</li>
+	</ul>
+	
+
+</body>
+</html>
+
+
