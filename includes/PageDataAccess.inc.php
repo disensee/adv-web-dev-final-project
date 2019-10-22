@@ -41,6 +41,46 @@ class PageDataAccess{
 
 		return $pageList;
 	}
-	
+	// Get a page by it's id
+	function getPageById($id){
+
+		// prevent SQL injection attack by 'scrubbing' the $id
+		$id = mysqli_real_escape_string($this->link, $id);
+
+		$qStr = "SELECT 
+					pageId, 
+					path, 
+					title,
+					description,
+					content,
+					categories.categoryId, 
+					categories.name as categoryName,
+					DATE_FORMAT(publishedDate,'%m/%e/%Y') as publishedDate, 
+					pages.active 
+				FROM pages
+				INNER JOIN categories on pages.categoryId = categories.categoryId
+				WHERE pageId = {$id}";
+
+		$result = mysqli_query($this->link, $qStr) or $this->handleError(mysqli_error($this->link));
+
+		if(mysqli_num_rows($result) == 1){
+			$row = mysqli_fetch_assoc($result);
+			$page = array();
+			$page['pageId'] = htmlentities($row['pageId']);
+			$page['path'] = htmlentities($row['path']);
+			$page['title'] = htmlentities($row['title']);
+			$page['description'] = htmlentities($row['description']);
+			$page['content'] = sanitizeHtml($row['content']); // Note that we are not using htmlentities() here!!!
+			$page['categoryId'] = htmlentities($row['categoryId']);
+			$page['categoryName'] = htmlentities($row['categoryName']);
+			$page['publishedDate'] = htmlentities($row['publishedDate']);
+			$page['active'] = htmlentities($row['active']);
+			return $page;
+		}else{
+			return false;
+		}
+	}
 }
+
+
 			

@@ -117,3 +117,25 @@ function getDBLink(){
 
 	return $link;
 }
+
+//redirect to 404 page
+function redirectTo404Page(){
+	header("HTTP/1.0 404 Not Found");
+	header("Location: " . PROJECT_DIR . "404.php");
+}
+
+// Removes 'dangerous' html tags and attributes from a string of html.
+function sanitizeHtml($inputHTML){
+       
+    // we'll allow these tags, but no others (we are white-listing)
+    $allowed_tags = array('<sub>','<sup>','<div>','<span>','<h1>','<h2>','<br>','<h3>','<h4>','<h5>','<h6>','<h7>','<i>','<b>','<a>','<ul>','<ol>','<em>','<li>','<pre>','<hr>','<blockquote>','<p>','<img>','<strong>','<code>');
+
+    //replace dangerous attributes...
+    $bad_attributes = array('onerror','onmousemove','onmouseout','onmouseover','onkeypress','onkeydown','onkeyup','onclick','onchange','onload','javascript:');
+    $inputHTML = str_replace($bad_attributes,"x",$inputHTML);
+   
+    $allowed_tags = implode('',$allowed_tags);
+    $inputHTML = strip_tags($inputHTML, $allowed_tags);
+
+    return $inputHTML;
+}
