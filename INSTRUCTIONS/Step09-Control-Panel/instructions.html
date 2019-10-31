@@ -1,0 +1,199 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Control Panel</title>
+</head>
+<body>
+	<h1>Control Panel</h1>
+	
+	<h3>Pre-Reqs</h3>
+	<ul>
+		<li>Understanding of HTML forms, and GET/POST requests</li>
+		<li>Understanding of sessions and cookies</li>
+		<li>(OPTIONAL) Understanding <b>hashing</b> functions/algorithms</li>
+	</ul>
+	<h3>Setting Up the Control Panel</h3>
+	<ul>
+		<li>Create a folder inside of the my-new-site folder named <b>control-panel</b></li>
+		<li>
+			Inside the control-panel folder, create a file named <b>login.php</b>.
+			The login page should start out by looking like <a href="login.txt">this</a>.
+			
+		</li>
+		<li>
+			Open the login page in the browser.
+			The form on the page is not pretty, but it will do for now.
+		</li>
+		<li>
+			Add an IF statement just under the $pageTitle and $pageDescription variables.
+			The code should look like <a href="login-if-statement.txt">this</a>.
+			Note that this IF statement checks to see of the login form was POSTED. 
+			If it was, then it extracts the user name and password entered.
+			Finally it checks the user input to see if it matches the real user name and password for logging in.
+			This is a crude authentication system, but it's simple.
+		</li>
+		<li>
+			By the way, here is some info about the <a href="https://wiki.php.net/rfc/isset_ternary">Null Coalesce operator</a>, which was introduced in PHP 7.
+		</li>
+		<li>
+			Refresh the page in the browser and try it out.
+			Note that if you enter the proper user name and password, you'll be redirected to a page that we have not yet created (the control panel home page).
+			Also note what happens if you don't enter the proper username and password.
+		</li>
+		<li>
+			Important - there are some security risks with displaying the password in our code as we have.
+			If our PHP installation gets corrupted, the web server could display PHP code in the browser.
+			We could make things more secure by hashing the password.
+		</li>
+	</ul>
+
+	<h3>Create the Control Panel Home Page</h3>
+	<ul>
+		<li>
+			Create a file named <b>index.php</b> inside the control-panel folder.
+			Put <a href="login-homepage.txt">this</a> code into the page.
+		</li>
+		<li>
+			Test the login page again, to make sure that once you login, you get redirected to the control panel home page.
+		</li>
+		<li>
+			Note that the control panel has a link to a 'blog-list' page. 
+			We will create that page soon.
+		</li>
+		<li>
+			Note that you can visit the control panel home page without logging in!
+			We want to make sure that if a user tries to visit this page without first logging in, they get redirected to the login page.
+			We'll do this by using sessions (and cookies).
+		</li>
+	</ul>
+
+	<h3>Making use of Sessions</h3>
+	<ul>
+		<li>
+			Open the config file and start a session by adding this function call at the top of the file, just after the opening PHP tag:
+			<b>session_start();</b>
+		</li>
+		<li>
+			Now every page on the site will use session tracking (since every page includes the config file).
+			We'll use sessions to store variables that can be saved on the web server as the user navigates from one page to another.
+			Sessions are a way of overcoming the <b>stateless nature of HTTP</b>.
+		</li>
+		<li>
+			Go back to the login.php page.
+			We'll set a session variable when you successfully log in, to indicate that you have been authenticated. 
+			Then we can check that variable when you navigate to other pages in the site.
+		</li>
+		<li>
+			Update the IF statement so that it looks like this <a href="screen-shots/1-set-session-variable.png">this</a> screen shot.
+			Notice lines 18 and 19 in screen shot. Line 18 will generate a new session id, which is a good practice any time a user logs in (it helps to prevent session hijacking attacks). 
+			Line 19 adds a new session variable named 'authenticated' to the $_SESSION super global array. Since all of our pages are using sessions, we can pull values of the $_SESSION array on any page. 
+			This allows us to transfer 'state' as a user tranistions from on page to another.
+			In other words, we can set session variables in one page, and retreive those variables on other pages.		
+		</li>
+	</ul>
+
+	<h3>Checking to see if a user has been authenticated (logged in)</h3>
+	<p>
+		We will now create an include file that will be included in the control panel home page
+		(the reason why we are putting this code into an include file is that the code will be used by other pages in the control panel as well). 
+		It will verify that the user has been authenticated by checking our session variable. 
+		If the session variable has not been set correctly, then we'll redirect the user to the login page. 
+		This will prevent people from seeing the control panel home page if they have not logged in.
+	</p>
+	<ul>
+		<li>
+			Create a file in the <b>control-panel</b> folder and name it <b>authentication-check.inc.php</b>.
+			The code should look like <a href="auth-check.txt">this</a>.
+		</li>
+		<li>
+			Note that it checks to see if the 'authenticated' session variable has been set (and set to 'yes').
+			If not, then the user is redirected to the login page.
+		</li>
+		<li>
+			Now go back to the control panel home page (control-panel/index.php) and include the file we just created.
+			Link to the file just after the link to our config file, like <a href="screen-shots/2-include-auth-check.png">this</a>.
+		</li>
+		<li>
+			Before we test it out, let's do one more thing. 
+			It's a good idea to destroy a session when a user logs out, and to recreate it when they login.
+			By visiting the login.php page (via a GET request), the user is effectively logging out (they will presumable attempt to re-login when they submit the login form).
+			Think about a scenario where you may have two different user accounts for a website (do you have more than one Gmail account?).
+			So we'll add an ELSEIF block to the IF statement that checks the REQUEST_METHOD, in this block we'll put code that obliterates the session.
+		</li>
+		<li>
+			Open the login.php page and update the IF statement we created earlier by adding an ELSEIF block.
+			The entire statement should look like <a href="screen-shots/3-updated-login-if-statement.png">this</a>.
+			By the way, <a href="https://7php.com/php-5-3-how-to-completely-destroy-session-variables-in-php/">this</a> is a good article that explains how to properly destory a session.
+		</li>
+		<li>
+			Note that by destroying the session and recreating it when a user logs in, we are helping to reduce the possibility of a <b>session hijacking attack</b>
+		</li>
+		<li>
+			Let's try it out. 
+			Open the login page in the browser but don't log in yet (this will destroy our session because of the code we just added).
+			Now try to visit the control panel home page, you should get redirected back to the login page.
+			Once you enter the correct username and password, you should be able to view the control panel home page.
+		</li>
+		<li>
+			We could use the Web Developer Tools to keep track of the session id cookie.
+			The session id should get updated every time we make a GET request to the login page.
+		</li>
+	</ul>
+
+	<h3>Update the Nav Bar</h3>
+	<ul>
+		<li>Open the header include file (header.inc.php)</li>
+		<li>Add <a href="screen-shots/4-link-to-control-panel.png">this</a> PHP code just before the closing UL tag in the nav bar</li>
+		<li>
+			Note that it checks the 'authenticated' session variable to see if the user has logged into the control panel.
+			If so, then a link to the control panel home page is added to the list.
+		</li>
+	</ul>
+
+	<h3>Security Issues</h3>
+
+	<p>Here are some things we can do to help secure the password (we'll discuss in class)</p>
+	<ul>
+		<li><b>MAKE SURE YOU CHANGE THE LOGIN NAME AND PASSWORD!</b></li>
+		<li>Make sure to use HTTPS! (We'll do that later in the project, but we'll have to configure our Apache server to use an SSL certificate first)</li>
+		<li>
+			Hash the values of the $password variable so that if anyone did see it, they would not know what the password is.
+			We would also have to apply the same hash to the $userNameEntered variable in order to compare it to the hashed $password.
+		</li>
+		<li>Create an include file that initializes the $userName and $password variable. Then we could put this file outside of the doc root dir.</li>
+		<li>Use session_name() to create your own session id cookie (instead of the default PHPSESSID).</li>
+		<li>To help prevent session hijacking, the book recommends storing the HTTP_USER_AGENT in session and checking it as well as verifying that the user has been authenticated.</li>
+		<li>Also, the book also mentions that you shouldn't use unset() to destroy sessions. I think this means doing this: <b>unset($_SESSION);</b>. But I think it's OK to do this: <b>unset($_SESSION['authenticated']);</b></li>
+		<li>Note that if you are using Git, or some other code versioning system, then it's not a good idea to commit code with passwords.</li>
+	</ul>
+
+	<h3>Follow Up Questions:</h3>
+	<ul>
+		<li>Explain the purpose of using a session variable to determine if a user has been authenticated (why can't we use a regular variable?)</li>
+		<li>Session variables are stored on the web server, but where on the web server?</li>
+		<li>Why is important for a login page to use HTTPS rather than HTTP?</li>
+		<li>What is the <b>ternary operator</b>?</li>
+		<li>What is the <b>null coalesce operator</b> in PHP 7?</li>
+		<li>Explain the stateless nature of HTTP.</li>
+	</ul>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

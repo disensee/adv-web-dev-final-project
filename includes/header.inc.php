@@ -24,6 +24,11 @@ $contentClass = empty($sideBar) ? "single-column" : "";
 			<li><a href="<?php echo(PROJECT_DIR); ?>pictures.php">Pictures</a></li>
 			<li><a href="<?php echo(PROJECT_DIR); ?>blog/index.php">Blog</a></li>
 			<li><a href="<?php echo(PROJECT_DIR); ?>contact.php">Contact</a></li>
+			<?php
+			 if(isset($_SESSION['authenticated']) && $_SESSION['authenticated'] == "yes"){
+				 echo('<li><a href=" ' . PROJECT_DIR . 'control-panel/index.php">Control Panel</a></li>');
+			 }
+			?>
 		</ul>
 	</nav>
 	<div id="content" class="<?php echo($contentClass); ?>">

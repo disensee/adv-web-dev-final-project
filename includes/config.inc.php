@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 set_error_handler("customErrorHandler");
 
 //detect if the code is running on localhost or the live server
