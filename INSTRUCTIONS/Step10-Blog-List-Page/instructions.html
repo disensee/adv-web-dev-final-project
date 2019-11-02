@@ -1,0 +1,84 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Blog List Page</title>
+</head>
+<body>
+	<h1>Blog List Page</h1>
+	<p>
+		Now we'll create the blog list page for our control panel.
+		This page will be very similar to the blog/index.php page that we create in a previous step.
+		In this case the page will be part of the control panel, and you must login before you can view it.
+		It will allow the site administrator (you) to choose blog posts to edit, and to create new blog posts (we'll build that page in step 10).
+		For now, we'll just work on showing a list of all blog posts.
+	</p>
+	<p>
+		Once you log into the control panel, you'll see a link to the 'blog list'. The link doesn't work right now, because we haven't created the blog-list.php page. 
+		We'll do that in this step.
+		Unlike the blog home page that we worked on earlier, the blog list page will display a list of all blog pages (not just the ones that are 'active').
+	</p>
+	<p>
+		This step should be fairly easy, because we can re-use some code that we've already written.
+		We'll use the getPageList() method of the PageDataAccess class. 
+	</p>
+	<ol>
+		<li>Create a new page inside the control panel folder and name the file <b>blog-list.php</b></li>
+		<li>
+			Add the boiler plate code, as we have been for all the new web pages that we've been adding to our site.
+			Make sure to include the authentication-check.inc.php file (to make sure that anyone who visits this page must first log in).
+			Also make sure to include the PageDataAccess class. We'll be calling the getPageList() method in a bit.
+			<br>
+			The code should look something like <a target="_blank" href="screen-shots/blog-list-starter-code.png">this</a>.
+		</li>
+		<li>
+			Let's add a function to the bottom of the page, it will be very similar to the function we made for the blog home page.
+			<br>
+			The code should like <a target="_blank" href="screen-shots/displayList.png">this</a>.
+		</li>
+		<li>
+			Now we'll add some code just under the H3 tag in the page.
+			First we'll add a hyper link to <b>blog-details.php</b>, a page that we have not yet created (but we'll do that in the next step).
+			The text inside the A tag should display <b>Add New Blog Page</b>.
+			<br>
+			Just under the A tag, we'll add some PHP code that instantiates the PageDataAccess class, then calls the getPageList() method of the class.
+			Make sure to pass in FALSE as the parameter, indicating we want to fetch all of the blog pages from the database (not just the 'active' ones).
+			<br>
+			This method should return an array containing the blog pages from the database.
+			<br>
+			We'll pass this array into the displayPages() function and echo out the string that gets returned.
+			<br>The code should look like <a href="screen-shots/1-main-content-code.png">this</a>. 
+		</li>
+		<li>
+			Now open the blog-list.php page in the browser. 
+			You should be redirected to the login page.
+			Once you log in, you should be able to visit the page. 
+			And you should see a table that displays all the blog pages from the database.
+			Notice that the last column in the table has a link to the blog-details.php page (which we will create in the next step).
+			It doesn't look very good right now, maybe we should spend some time on the CSS to make the page look better.
+		</li>
+		<li>
+			In the next step things will get complicated.
+			We'll create the <b>blog-details.php</b> page, which will allow you to add new blog pages to your site, and to edit blog pages as well.
+		</li>
+	</ol>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
