@@ -1,0 +1,15 @@
+//////////////////////
+// Functions
+/////////////////////
+
+function createCategoryOptions($categories, $selectedCategoryId = null){
+
+	$html = "<option value=\"0\">Choose one...</option>";
+
+	foreach($categories as $row){
+		$selectedAttr = ($row['categoryId'] == $selectedCategoryId ? " selected " : "");
+		$html .= "<option value=\"{$row['categoryId']}\" $selectedAttr>{$row['name']}</option>";
+	}
+
+	return $html;
+}

@@ -1,0 +1,4 @@
+// Wraps an error message inside a span tag (and sets the class to 'validation')
+function wrapValidationMsg($str){
+	return "<span class=\"validation-message\">{$str}</span>";
+}

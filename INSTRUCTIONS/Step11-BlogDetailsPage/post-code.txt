@@ -1,0 +1,22 @@
+//echo("The form has been submitted, we need to validate the input, then check the pageId to see if we should insert or update");
+
+// Get the user input and stuff it into the $page array
+$page['pageId'] = $_POST['pageId'];
+//$page['path'] = $_POST['path'];
+$page['title'] = $_POST['title']; 
+$page['description'] = $_POST['description']; 
+$page['content'] = $_POST['content']; 
+$page['publishedDate'] = $_POST['publishedDate']; 
+$page['categoryId'] = $_POST['categoryId'];
+$page['active'] = $_POST['active'] ?? $page['active'];
+
+// Validate the input and get validation errors (if there are any)
+$validationErrors = validatePageInput($page);
+
+if(empty($validationErrors)){
+	// TODO: the input is valid, so we'll send it to the database
+	// But we need to determine whether to INSERT or UPDATE
+}else{
+	var_dump($validationErrors); 
+	// we'll comment the above line out soon, but for now it shows us validation error messages
+}

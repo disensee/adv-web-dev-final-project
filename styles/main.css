@@ -131,6 +131,19 @@ footer a{
   border: 2px solid #333333;
 }
 
+form.control-panel label{
+	display: block;
+	padding-top: 15px;
+}
+
+form.control-panel textarea{
+	width: 100%;
+}
+
+form.control-panel textarea[name=content]{
+	height:180px;
+}
+
 /*MEDIA QUERIES*/
 @media all and (max-width : 800px) {
 

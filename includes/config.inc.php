@@ -139,3 +139,29 @@ function sanitizeHtml($inputHTML){
 
     return $inputHTML;
 }
+
+function validateDate($dateStr){
+	$dateParts = explode('/', $dateStr);
+
+	if(count($dateParts) != 3){ //prevents "blah" from passing validation
+		return false;
+	}
+
+	if(strpos($dateStr, ".") !== FALSE){ //prevents "2.7/5/2018" from passing validation
+		return false;
+	}
+
+	if(intval($dateParts[0]) > 0 && intval($dateParts[1]) > 0 && intval($dateParts[2]) > 0){
+		//prevents "2/5/blah" from passing validation
+		//for info on checkdate() go to http://php.net/manual/en/function/checkdate.php
+		return checkdate($dateParts[0], $dateParts[1], $dateParts[2]);
+	}else{
+		return false;
+	}
+	return true;
+}
+
+function convertDateForMySQL($dateStr){
+	$dt = new DateTime($dateStr);
+	return $dt->format('Y-m-d');
+}

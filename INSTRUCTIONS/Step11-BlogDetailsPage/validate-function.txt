@@ -1,0 +1,40 @@
+function validatePageInput($page){
+
+	// we'll populate this array with any errors that we discover.
+	$errors = array();
+
+	// validate title
+	if(empty($page['title'])){
+		$errors['title'] = "You must enter a title";
+	}
+
+	// validate description
+	if(empty($page['description'])){
+		$errors['description'] = "You must enter a description";
+	}
+
+	// validate content
+	if(empty($page['content'])){
+		$errors['content'] = "You must enter content";
+	}
+
+	// validate published date
+	if(empty($page['publishedDate'])){
+		$errors['publishedDate'] = "You must enter a published date";
+	}else if(validateDate($page['publishedDate']) == FALSE){
+		$errors['publishedDate'] = "The publish date entered is not valid";
+	}
+
+	// validate category
+	if($page['categoryId'] > 0 == FALSE){
+		$errors['categoryId'] = "You must choose a category";
+	}
+
+	// validate active
+	if($page['active'] != "yes" && $page['active'] != "no"){
+		// foul play suspected!
+		$errors['active'] = "Active must be 'yes' or 'no'.";
+	}
+
+	return $errors;
+}

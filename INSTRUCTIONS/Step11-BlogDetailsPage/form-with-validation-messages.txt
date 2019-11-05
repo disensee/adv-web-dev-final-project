@@ -1,0 +1,53 @@
+<form class="control-panel" method="POST" action="<?php echo($_SERVER['PHP_SELF']) ?>">
+	
+	<input type="hidden" name="pageId" value="<?php echo($page['pageId']); ?>" />
+				
+	<label>
+		Title
+		<?php echo(isset($validationErrors['title']) ? wrapValidationMsg($validationErrors['title']) : ""); ?>
+	</label>
+	<input type="text" name="title" value="<?php echo($page['title']); ?>" />
+	
+	<label>
+		Description
+		<?php echo(isset($validationErrors['description']) ? wrapValidationMsg($validationErrors['description']) : ""); ?>
+	</label>
+	<textarea name="description"><?php echo($page['description']); ?></textarea>
+	
+	<label>
+		Content
+		<?php echo(isset($validationErrors['content']) ? wrapValidationMsg($validationErrors['content']) : ""); ?>
+	</label>
+	<textarea name="content"><?php echo($page['content']); ?></textarea>
+	
+	<label>
+		Published Date (mm/dd/yyyy)
+		<?php echo(isset($validationErrors['publishedDate']) ? wrapValidationMsg($validationErrors['publishedDate']) : ""); ?>
+	</label>
+	<input name="publishedDate" value="<?php echo($page['publishedDate']); ?>" />
+	
+	<label>
+		Category
+		<?php echo(isset($validationErrors['categoryId']) ? wrapValidationMsg($validationErrors['categoryId']) : ""); ?>
+	</label>
+	<select name="categoryId">
+	<?php
+		// fetch the categories from the db
+		$cda = new CategoryDataAccess(getDBLink());
+		$categories = $cda->getCategoryList(false);
+		
+		// create the option tags
+		echo(createCategoryOptions($categories, $page['categoryId']));
+	?>	
+	</select>
+
+	<label>
+		Active
+		<?php echo(isset($validationErrors['active']) ? wrapValidationMsg($validationErrors['active']) : ""); ?>
+	</label>
+	<input type="radio" name="active" value="yes" <?php echo($page['active'] == "yes" ? "checked" : "") ?> /> YES	
+	<input type="radio" name="active" value="no" <?php echo($page['active'] == "no" ? "checked" : "") ?> /> NO
+	
+	<br>	
+	<input type="submit" value="SAVE" />	
+</form>

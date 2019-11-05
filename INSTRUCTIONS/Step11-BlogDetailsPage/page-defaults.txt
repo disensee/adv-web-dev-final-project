@@ -1,0 +1,17 @@
+//Set defaults
+$page = array();
+$page['pageId'] = "";
+$page['path'] = "";
+$page['title'] = "";
+$page['description'] = "";
+$page['content'] = "";
+$page['categoryId'] = 0;
+$page['publishedDate'] = date("m/d/Y", time());
+$page['active'] = "no"; // you may want this to default to 'yes'
+
+// Set up the $pda object 
+$pda = new PageDataAccess(getDBLink());
+
+// Create an empty array to store input validation errors
+// (we'll use this array when we get to the validation code)
+$validationErrors = array();

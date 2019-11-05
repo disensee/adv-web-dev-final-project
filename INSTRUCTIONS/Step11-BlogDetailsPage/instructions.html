@@ -1,0 +1,339 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Blog Details Page</title>
+</head>
+<body>
+	<h1>Blog Details Page</h1>
+	<p>We may want to break this one up since it's a big one. It might be a good idea to split it after 'Creating the CagegoryDataAccess class'.</p>
+	<h3>Pre-Reqs</h3>
+	<ul>
+		<li>Understanding of how MySQL stores dates, and how to convert to that format</li>
+		<li>Understanding of <b>date format specifiers</b></li>
+		<li>Some OO PHP</li>
+		<li>How to populate a select box with dynamic options (see dynamic-select-box.php).</li>
+		<li>Understand XSS attacks and how the htmlentities() function can help to prevent them.</li>
+		<li>Hidden form inputs</li>
+	</ul>
+	<p>
+		<b>Get ready, things are about to get complicated.</b>
+	</p>
+	<p>
+		We are about to start working on the 'blog details' page. 
+		This page will allow you to edit existing blog pages, and to create new ones.
+		This will be the most complicated page we've worked on yet.
+		We'll be working on some algorithms that should look somewhat familiar to you based on some of the sample code we've written together in class.
+		So hopefully that will help us to understand the complexity of the code we are about to add to our project.
+	</p>
+	<!--
+	<p>
+		When dealing with a very complicated problem, it's best to break it down to smaller individual problems.
+		So we'll start by adding a few functions to our config file to help us in working with dates (remember that each blog post has a 'published date').
+		Then we'll test those functions to make sure they are working properly before we move on.
+		By testing these functions before we actually use them in our project, it will help us to mimimize the amount of debugging we have to do when we start on the blog-details page.
+		But before we get started on that, let's create the blog details page and put some skeleton code in place so that you can see what are getting into.
+	</p>
+	-->
+	<h3>Creating the Blog Details Page</h3>
+	<ul>
+		<li>
+			In the control-panel folder, create a file named <b>blog-details.php</b>.
+		</li>
+		<li>
+			Put <a href="blog-details-starter-code.txt">this</a> code into the file.
+		</li>
+		<li>
+			Take a good look at this code. You should understand all of it. Note the following:
+			<ol>
+				<li>
+					It follows the same pattern that all of the other pages on the site use.
+				</li>
+				<li>It includes authentication-check.inc.php, which means that if you haven't logged in when you try to visit the page, you'll be redirected to the login page.</li>
+				<li>It displays an HTML form on the page, you'll be able to edit blog posts and add new ones by filling out the form.</li>
+				<li>It has an IF statement to handle GET and POST requests.</li>
+			</ol>
+		</li>
+		<li>
+			Now let's navigate to the page in the browser. 
+			You'll have to login first, and you should be redirected to the control panel home page.
+			From there, click on the link to the Blog List page.
+			Once you reach the blog list page, click on the link that says Add New Blog Page.
+			You should be taken to the blog details page. 
+			It looks pretty bad right now, but we'll fix that in a minute by adding some CSS code.
+		</li>
+	</ul>
+
+	<h3>Adding CSS code to clean up the blog details page</h3>
+	<ul>
+		<li>
+			It might make sense to create a separate style sheet for the control panel, but to keep things simple, we'll just add some rules to the main.css style sheet.
+			Open main.css and add <a href="screen-shots/form-css.png">these rule sets</a> before the media query.
+			Note that we should really spend more time making the form look better, but in order to keep things moving we'll cut some corners.
+		</li>
+		<li>Reload the blog details page in the browser. It should be much easier to read now.</li>
+	</ul>	
+
+	<h3>Testing out the Blog Details page</h3>
+	<ul>
+		<li>Navigate back to the blog-list.php page in the browser.</li>
+		<li>Click one of the links that say EDIT.</li>
+		<li>Notice the url. It has a query string variable named <b>pageId</b> which indicates the id of the blog post that you want to edit.</li>
+		<li>Navigate back to the blog-list page again.</li>
+		<li>Click on the link to Add New Blog Page.</li>
+		<li>The blog details page will handle both editing blog pages, and adding new ones.</li>
+		<li>Now press the 'Save' submit button and notice the message that is echoed out at the top of the page.</li>
+		<li>Make sure you understand all the code in the IF statement that controls the behavior of the page. This is a very important algorithm to understand.</li>
+		<li>
+			Now take a look at the HTML code in the blog details page, and notice that there is a hidden input for the pageId.
+			Users should be oblivious to the pageId, so we'll keep it hidden from view.
+		</li>
+		<li>
+			Note that there is an input named 'path', we'll ignore that for now. But I'm hoping that we can use it in the future to drastically improve the SEO (search engine optimization) of our blog posts.
+		</li>
+		<li>
+			Note that there is an empty select box in the form. We'll need to populate that with 'categories' from the database (you will be able to categorize your blog posts).
+		</li>
+		<li>
+			Finally, note that the user must enter the date that the blog post is 'published'.
+			We may eventually add a calendar (date picker) that pops up to help users enter a valid date, but for now we'll just force the user to type in the date.
+		</li>
+		<li>If you want, go ahead and comment out the echo() function calls that display messages at the top of the page (there are 3 of them).</li>
+	</ul>
+	<p>
+		Now that you have an idea of how the blog details page should work, we can start to break it down into 'small problems'.
+	</p>
+
+	<h3>Adding Methods to the PageDataAccess class</h3>
+	<p>
+		The blog details pages will allow you to add new blog pages (by using INSERT queries), and edit existing pages (by using UPDATE queries).
+		Now we'll add methods to the PageDataAccess class to run those queries.
+	</p>
+	<ul>
+		<li>Add <a href="screen-shots/insertPage.png" target="_blank">this</a> method to the PageDataAccess class.</li>
+		<li>Now add <a href="screen-shots/updatePage.png" target="_blank">this</a> method to the PageDataAccess class.</li>
+		<li>
+			Now let's run some tests to make sure our methods are working.
+			Open page-data-access-tests.php and <a href="page-data-access-tests.txt">this</a> code.
+		</li>
+		<li>Open phpMyAdmin in the browser ( localhost/phpmyadmin )</li>
+		<li>Open the test page in the browser to run the insert</li>
+		<li>Use phpMyAdmin to verify that the row was inserted properly</li>
+		<li>Uncomment the code that tests the update, then refresh the test page in the browser</li>
+		<li>Use phpMyAdmin to verify that the row was inserted and updated properly</li>
+	</ul>
+
+	<h3>Adding 'Date' Functions to the config file</h3>
+	<p>
+		We are going to add a function that validates a date entered by the user, and another function that will convert a date string from one format to another.
+		Most people are familiar with dates that look like this: <b>m/d/Y</b>. 
+		But MySQL requires that dates are stored like this: <b>Y-m-d</b>.
+		So we'll need to convert dates from m/d/Y to Y-m-d before inserting or updating them in the database. 
+	</p>
+	<ul>
+		<li>Open the <b>config file</b> and add <a href="screen-shots/validateDate.png" target="_blank">this</a> function</a>.</li>
+		<li>Now add <a href="screen-shots/convertDate.png" target="_blank">this</a> function</a>.</li>
+		<li>
+			We probably should have done this sooner, but let's now create a test page for functions that are in the config file.
+			Create a file named <b>config-function-tests.php</b> in the <b>tests</b> folder and put <a href="config-function-tests.txt">this</a> code in it.
+		</li>
+		<li>
+			Note that these tests are more like formal unit tests than the ones we have previously written for this project.
+			They include code that determines whether each test passed or failed.
+		</li>
+		<li>
+			Open the test page in the browser and make sure all tests passed.
+		</li>
+		<li>
+			Spend some time to make sure you understand both the date functions and the test code!
+			Now we have peace of mind that our functions work before we use them in the blog details page (divide and conquer!).
+		</li>
+	</ul>
+
+	<h3>Creating the CategoryDataAccess class</h3>
+	<p>
+		Now we'll start to work on another 'small' problem before getting back to work on the blog-details page.
+		You will be able to categorize your blog posts, and the categories will be stored in the categories table in the database.
+		We could add methods to our PageDataAccess class, but instead lets create a class specifically for working with the 'categories' table of the database.
+	</p>
+	<ul>
+		<li>
+			Create a new file in the 'includes' folder and name it <b>CategoryDataAccess.inc.php</b>.
+			<br>When you are building a website that works with a complicated database, it makes sense to have a 'data access' class for each table in the database.
+			<br>So the class that we are about to add to this file will handle SQL queries for the <b>categories</b> table in the database.
+		</li>
+		<li>
+			Add <a href="screen-shots/categoryDataAccess.png" target="_blank">this</a> code to the file.
+			<br>By now, the code should look somewhat familiar to you.
+		</li>
+		<li>
+			Now add <a href="screen-shots/getCategoryList.png" target="_blank">this</a> method to the CategoryDataAccess class. 
+			<br>It selects all categories from the database.
+		</li>
+		<li>
+			Now create a file in the 'tests' folder and name it <b>category-data-access.tests</b>
+		</li>
+		<li>Add <a href="category-tests.txt">this</a> code to the file.</li>
+		<li>Open the test page in the browser to confirm that our code is properly pulling the categories from the database.</li>
+	</ul>
+
+	<h3>Populating the Drop Down list in the Blog Details Page</h3>
+	<p>Now that we've solved some small problems, and run tests to verify that our code is working, we can get back to work on the blog-details page.</p>
+	<ul>
+		<li>
+			Open the blog-details page in your editor and include the CategoryDataAccess class, just under the include to the PageDataAccess class.
+		</li>
+		<li>
+			Now add <a href="create-category-options.txt">this</a> function to the bottom of the page.
+			It should look familiar to you, from when we did the <b>dynamic-select-box.php</b> sample code in class.
+		</li>
+		<li>Finally, add <a href="screen-shots/display-category-options.png">this</a> code in between the opening and closing SELECT tags on the page.</li>
+		<li>Reload the blog details page in the browser</li>
+		<li>Note that later, we'll add an argument when we call createCategoryOptions() that will 'select' the proper category when blog pages are being edited (updated). </li>
+	</ul>
+
+	<h3>Adding Page Data to the Blog Details Page</h3>
+	<ul>
+		<li>
+			In the blog-details.php page, add <a href="page-defaults.txt">this</a> associative array just under the $pageTitle and $pageDescription variables.
+			<br>Note that we could have used individual variables instead of putting everything into an assoc array, but the array will fit in nicely with the code that fetches page data from the database.
+		</li>
+		<li>
+			If a GET request is used to view this page, and the <b>pageId</b> query string parameter is in the URL, then we are editing an existing page (rather than inserting a new one). 
+			<br>So we need to fetch the page that matches the ID in the query string of the URL. 
+			<br>Add <a href="screen-shots/get-page-by-id.png">this</a> method call inside the IF statment that checks to see if $_GET['pageId'] 'is set'.
+		</li>
+		<li>
+			Now, if an existing blog page is being edited, we must display it's values so that they can be edited.
+			Replace the entire  HTML form on the page with <a href="form-with-data.txt">this</a> code.
+		</li>
+		<li>
+			Note that the form now includes data from the $page array.
+			PHP code is used to populate the 'value' attributes for text inputs and the innerHTML for textareas.
+			We are using the ternary operator to determine whether or not the 'check' the 'active' radio buttons. 
+		</li>
+		<li>
+			Note that if we are creating a new page, then the default values for the $page array are used.
+			But if we are fetching a page from the database, then the page defaults are replaced with values from the database.
+		</li>
+		<li>
+			We are now passing a second argument (the categoryId) into the createCategoryOptions() function, which sets the select box to the proper option.
+		</li>
+		<li>
+			Refresh the page in the browser.
+			Make sure to navigate back to the blog list page and then return to the blog details page by click an EDIT link and the Add New Blog Page link.
+		</li>
+	</ul>
+
+	<h3>Validating the User Input</h3>
+	<ul>
+		<li>
+			Inside the ELSE IF block that handles POST requests, add <a href="post-code.txt">this</a> code.
+			<br>
+			Note that it collects the user input that was posted and uses it to populate the $page associative array.
+			<br>
+			Note that it references a function that has not yet been defined (validatePageInput()), we'll define it soon.
+		</li>
+		<li>
+			Also note the use of the 'null coalesce operator' for the 'active' radio buttons. 
+			<br>
+			Remember that if no radio buttons in a group are 'checked', then no data will be posted when the form is submitted.
+		</li>
+		<li>
+			We can't run this code until we create the validatePageInput() function, so lets do that now.
+			<br>
+			Put <a href="validate-function.txt">this</a> code at the buttom of the page, under the createCategoryOptions() function.
+		</li>
+		<li>
+			Now load the page and test that the validation errors are working properly.
+		</li>
+	</ul>
+
+	<h3>Displaying Validation Error Messages</h3>
+	<p>
+		Right now we are just dumping out the error messages at the top of the page, but in this step we'll make it quite a bit more user-friendly.
+		<br>But before we update code in the blog details page, we are going to add yet another function to the config file.
+	</p>
+	<ul>
+		<li>Open the config file and add <a href="screen-shots/wrapValidationMsg.png" target="_blank">this</a> function.</li>
+		<li>Note that the function simply takes a string and wraps it in a SPAN tag with a class attribute set to validation-message (see main.css for .validation-message code).</li>
+		<li>
+			Now go back to the blog-details.php page, and replace the entire HTML form with <a href="form-with-validation-messages.txt">this</a> code.
+			<br>This version of the form uses the function that we just added to the config file to display validation error messages.
+		</li>
+		<li>
+			You can comment out the code in blog-details.php that var dumps out the $validationErrors array since we no longer need it.
+			<br>
+			You can actually comment out (or delete) the entire ELSE block within that IF statement.
+		</li>
+		<li>Test the page out in the browser to make sure the validation is working and that the messages are properly displayed.</li>
+	</ul>
+
+	<h3>Inserting or Updating the Data</h3>
+	<p>
+		Let's now focus on the IF statement that checks to see if the $validationErrors array is empty.
+		That IF statement currently looks like this:
+	</p>
+	<pre>
+if(empty($validationErrors)){
+	// TODO: the input is valid, so we'll send it to the database
+	// But we need to determine whether to INSERT or UPDATE
+}
+	</pre>
+	<p>
+		Let's update it to look like this:
+	</p>
+	<pre>
+if(empty($validationErrors)){
+
+	// we need to convert the published date to Y-m-d format (this code smells to me!)
+	$page['publishedDate'] = convertDateForMySQL($page['publishedDate']);
+	
+	// Insert or Update (depends on $page['pageId'])
+	if($page['pageId'] > 0){
+		// UPDATE
+		$pda->updatePage($page);
+	}else{
+		// INSERT
+		$pda->insertPage($page);
+	}
+
+	header("Location: " . PROJECT_DIR . "control-panel/blog-list.php");
+	exit();
+}
+	</pre>
+	<ul>
+		<li>
+			Note first that we must convert the published date to the format required by MySQL.
+			<br>
+			Also note the comment (about 'smelly' code). As the project has been evolving, I've been feeling uneasy about some of my design decisions.
+			<br>
+			I put the convertDateForMySQL() function in the config file (along with other functions), but you could argue that it doesn't belong there (maybe it belongs in the PageDataAccess class).
+			Many times you'll have these doubts and questions. 
+			Sometimes you'll run into situations that make you realize you should have done things differently.
+			Sometimes you find that you were correct to do something in a certain way. 
+			You can never fully predict the future, but in order to keep a project moving, you have to try something.
+		</li>
+		<li>
+			Note that we check the pageId to determine if a blog page is being edited (UPDATE) or created (INSERT).
+		</li>
+	</ul>
+
+	<h3>Final Thoughts</h3>
+	<p>The code for this page is a tightly choreographed dance!</p>
+	<ul>
+		<li>Notice how the name attributes of the form inputs match the columns from the 'pages' table in the database.</li>
+		<li>Notice how the keys in the $error array match the names of form inputs.</li>
+		<li>I have used variations of this algorithm for collecting user input many times in my career!</li>
+	</ul>
+
+	<h3>Follow Up Questions:</h3>
+	<ul>
+		<li>We have duplicate code in the insertPage() and updatePage() methods (in the PageDataAccess class). What could we do to minimize the duplicate code?</li>
+		<li>In the insertPage() method, look at the $qStr variable. Why are we required to use curly braces around the variables that are being embedded into the query?</li>
+		<li>How can you use a CSS selector to target a tag that has an attribute that is set to a certain value?</li>
+		<li>Create a diagram that summarizes the algorithm used to solve the problem of adding and editing blog pages.</li>
+		<li>Explain the role of the pageId in the algorithm.</li>
+	</ul>
+
+</body>
+</html>

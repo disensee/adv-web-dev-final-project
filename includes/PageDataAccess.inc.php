@@ -80,6 +80,83 @@ class PageDataAccess{
 			return false;
 		}
 	}
+	//inserts a row into the pages table
+	function insertPage($page){
+		//prevent SQL injection
+		$page['path'] = mysqli_real_escape_string($this->link, $page['path']);
+		$page['title'] = mysqli_real_escape_string($this->link, $page['title']);
+		$page['description'] = mysqli_real_escape_string($this->link, $page['description']);
+		$page['content'] = mysqli_real_escape_string($this->link, $page['content']);
+		$page['categoryId'] = mysqli_real_escape_string($this->link, $page['categoryId']);
+		$page['publishedDate'] = mysqli_real_escape_string($this->link, $page['publishedDate']);
+		$page['active'] = mysqli_real_escape_string($this->link, $page['active']);
+
+		//build the SQL query
+		$qStr = "INSERT INTO pages (
+				path,
+				title,
+				description,
+				content,
+				categoryId,
+				publishedDate,
+				active
+			) VALUES (
+				'{$page['path']}',
+				'{$page['title']}',
+				'{$page['description']}',
+				'{$page['content']}',
+				'{$page['categoryId']}',
+				'{$page['publishedDate']}',
+				'{$page['active']}'
+		)";
+		//die($qStr);
+		$result = mysqli_query($this->link, $qStr) or $this->handleError(mysqli_error($this->link));
+
+		if($result){
+			//add the pageId that was assigned by the database
+			$page['pageId'] = mysqli_insert_id($this->link);
+			//then return the page (with the pageId)
+			return $page;
+		}else{
+			$this->handleError("unable to insert page");
+		}
+		return false;
+	}
+	//updates a row in the pages table
+	function updatePage($page){
+		
+		//prevent SQL injection
+		$page['pageId'] = mysqli_real_escape_string($this->link, $page['pageId']);
+		$page['path'] = mysqli_real_escape_string($this->link, $page['path']);
+		$page['title'] = mysqli_real_escape_string($this->link, $page['title']);
+		$page['description'] = mysqli_real_escape_string($this->link, $page['description']);
+		$page['content'] = mysqli_real_escape_string($this->link, $page['content']);
+		$page['categoryId'] = mysqli_real_escape_string($this->link, $page['categoryId']);
+		$page['publishedDate'] = mysqli_real_escape_string($this->link, $page['publishedDate']);
+		$page['active'] = mysqli_real_escape_string($this->link, $page['active']);
+
+		//build the SQL query
+		$qStr = "UPDATE pages SET
+					path = '{$page['path']}',
+					title = '{$page['title']}',
+					description = '{$page['description']}',
+					content = '{$page['content']}',
+					categoryId = '{$page['categoryId']}',
+					publishedDate = '{$page['publishedDate']}',
+					active = '{$page['active']}'
+				WHERE pageId = '{$page['pageId']}'";
+
+		//die($qStr);
+
+		$result = mysqli_query($this->link, $qStr) or $this->handleError(mysqli_error($this->link));
+
+		if($result){
+			return $page;
+		}else{
+			$this->handleError("unable to update page");
+		}
+		return false;
+	}
 }
 
 
