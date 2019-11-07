@@ -165,3 +165,7 @@ function convertDateForMySQL($dateStr){
 	$dt = new DateTime($dateStr);
 	return $dt->format('Y-m-d');
 }
+
+function wrapValidationMsg($str){
+	return "<span class=\"validation-message\">${str}</span>";
+}
