@@ -1,0 +1,4 @@
+!.gitignore
+
+#ignore uploaded files
+/uploaded-files
