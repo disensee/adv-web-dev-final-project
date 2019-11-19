@@ -1,0 +1,316 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Handling Image Uploads</title>
+</head>
+<body>
+	<h1>Handling Image Uploads</h1>
+	
+	<h3>Pre-Reqs</h3>
+	<ul>
+		<li>Understanding of how file uploads work in PHP</li>
+	</ul>
+
+	<h3>Add a 'Files' Table to the Database</h3>
+	<p>
+		Take a look at the following SQL statement and then run it in PHPMyAdmin (in the <b>my-new-site</b> database) to create the table:
+	</p>
+	<pre>
+DROP TABLE IF EXISTS files;
+CREATE TABLE IF NOT EXISTS files (
+  fileId int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  fileName varchar(200) NOT NULL,
+  fileDescription varchar(200) NOT NULL,
+  fileExtension varchar(10) NOT NULL,
+  fileSize int(11) NOT NULL
+) ENGINE=InnoDB;		
+	</pre>
+	<p>
+		Note that we are going to use this table to keep track of all the images that we add to our blog posts.
+		But it could potentially be used to attach other files to blog posts as well, which is why the table is called 'files' rather than 'images'.
+	</p>
+
+	<h3>Create a FileDataAccess Class</h3>
+	<ul>
+		<li>
+			Create a file in the 'includes' folder and name it <b>FileDataAccess.inc.php</b>.
+		</li>
+		<li>
+			Paste <a href="file-data-access-starter.txt">this</a> code into the file.
+		</li>
+		<li>
+			Create a file inside the 'tests' folder called <b>file-data-access-tests.php</b>
+			and add <a href="file-tests.txt">this</a> code to it.
+			<br>This page will test the methods in the FileDataAccess class.
+			<br>Load the page in the browser after you write the code for each method in the FileDataAccess class
+			<br>Make sure that you are not getting any errors and confirm that the data returned by each method is correct.
+		</li>
+		<!--
+		<li>
+			Add code to test the insertFile() method that you just created.
+			If you need help, look at one of the other 'test' files.
+			<ul>
+				<li>Add the proper includes.</li>
+				<li>Instantiate a FileDataAccess object (make sure to pass in the link when you call the constructor).</li>
+				<li>
+					Create a 'dummy' $file object to be inserted into the database.
+					For the fileName, use a value such as 'test.png' (the file name should include the extension).
+					For the fileExtension, use a value of 'png'.
+				</li>
+				<li>
+					Invoke the insertFile() method and dump out the return value.
+					Note that the return value should include the fileId that was assigned by the database.
+				</li>
+				<li>Check the files table in PHPMyAdmin to verify a row was inserted.</li>
+			</ul>
+		</li>
+		-->
+		<li>
+			Start out by writing the code for insertFile() method in the FileDataAccess class.
+			<br>Refer to the PageDataAccess class for help, this method is similar to insertPage().
+			<br>Make sure to run the test page after adding the body of the insertFile() method.
+		</li>
+		<li>
+			Implement the code for the getFileList() method in the FileDataAccess class.
+			<br>
+			The method should fetch all the columns from the 'files' table.
+			<br>
+			To help you, look at the similar method in the PageDataAcess class.
+			<br>Test the getFileList() method in the test page.
+		</li>
+		<li>
+			Implement the code for the getFileById() method in the FileDataAccess class.
+			<br>
+			For the getFileById() method, you should fetch all the columns from the 'files' table.
+			<br>
+			To help you, look at the similar method in the PageDataAcess class.
+			<br>
+			Test the getFileById() method in the test page.
+		</li>
+		<li>
+			Implement the code for the updateFile() method in the FileDataAccess class.
+			To help you, look at the similar method in the PageDataAcess class.
+			<br>
+			Test the updateFile() method in the test page.
+		</li>
+	</ul>
+
+	<h3>Create a File List Page</h3>
+	<ul>
+		<li>Create a file in the 'control-panel' folder named <b>file-list.php</b></li>
+		<li>
+			Paste <a href="file-list-starter.txt">this</a> code into file-list.php.
+			You will have to implement the code for the displayFiles() function.
+			You will also have to write the PHP code that appears inside the MAIN tag of the page.
+			There are comments there to help you with each step.
+			Refer to the blog-list.php file for help.
+			Note: If you do not want to display the fileDescription in the list, that's fine.
+		</li>
+		<li>Open the control panel home page and add a link to the file list page.</li>
+	</ul>
+
+	<h3>Setting Up the File Details Page</h3>
+	<p>
+		Eventually, this page will allow you to upload image files to your web server.
+		But we won't worry about that yet.
+		For now, we'll just focus on allow you to insert and update rows in the files table.
+	</p>
+	<ul>
+		<li>Add a folder inside the my-new-site folder called <b>uploaded-files</b>.</li>
+		<li>
+			<p>
+			Add constants to the config file that points to the uploaded-files dir 
+			(for both LIVE and DEV envornments, but you can use the same values for both environments).
+			The constants should look like this:
+			</p>
+			<pre>
+define("UPLOAD_FOLDER", PROJECT_DIR . "uploaded-files/");
+define("SERVER_UPLOAD_FOLDER", $_SERVER['DOCUMENT_ROOT'] . UPLOAD_FOLDER);
+			</pre>
+			<p>
+			Why do we need both UPLOAD_FOLDER and SERVER_UPLOAD_FOLDER?
+			Well, when we are uploading files on the server we'll use a path that is relative to the root directory the computer.
+			But when we display images (that have been uploaded) in the browser, we'll use a path that is relative to the document root directory of the web server.
+			</p>
+		</li>
+		<li>
+			<p>
+			Add a method named <b>getFileExtenstion()</b> to the FileDataAccess class. Here is the code for it:
+			</p>
+			<pre>
+// extract the extension from a file name
+// Note: In hindsight, I should have used pathinfo() for this (it's a function that's built into PHP)
+function getFileExtension($fileName){
+
+	$parts = explode(".", $fileName);
+	
+	//Not sure if we should really throw an exception here!
+	if(count($parts) < 2){
+		$this->handle_error("$fileName has no file extension");
+	}
+
+	return array_pop($parts);
+}
+			</pre>
+			<p>We could spend some time discussing this code.</p>
+		</li>
+	
+		<li>
+			<p>
+			Create a file inside the 'control-panel' folder named <b>file-details.php</b>.
+			Then copy <a href="file-details-starter.txt">this</a> code into it.
+			</p>
+			<p>
+			Note the hidden fields (fileId, fileName, fileExtension, fileSize).
+			These are all hidden from the user becuase our code will set their values.
+			</p>
+			<p>
+			Note that we've added a few variables near the top of the page to help us validate the files being uploaded 
+			($allowed_file_types, and $max_file_size)
+			</p>
+			<p>
+			Take some time to go through the code and understand it before moving on.
+			You can actually use the page to insert and update records in the files table (but you'll notice it's got some issues).
+			</p>
+		</li>
+	</ul>
+
+	<h3>Finishing Up the File Details Page</h3>
+	<p>
+		Notice in the file-details.php page, that there are comments that mark off our next steps.
+		To get started, find the comment that says STEP 1.
+	</p>
+	<ul>
+		<li>
+			<p>
+			STEP 1 - Add the following code under the STEP 1 comment.
+			Note that this code runs only if a file is being uploaded.
+			</p>
+			<pre>
+if($_FILES['upload']['error'] == UPLOAD_ERR_OK){
+	
+	// get details of the uploaded file and store them in the $file array
+	$file['fileName'] = $_FILES['upload']['name'];
+	$file['fileSize'] = $_FILES['upload']['size']; 
+	$file['fileExtension'] = $fda->getFileExtension($file['fileName']);
+
+	// set the full path of where the uploaded file should be moved to
+	$filePath = SERVER_UPLOAD_FOLDER . $file['fileName'];
+
+  	// move the file from the tmp dir to it's final destination
+  	if( !move_uploaded_file($_FILES['upload']['tmp_name'], $filePath) ){
+  		throw new Exception("Unable to move uploaded file");
+  	}
+}				
+			</pre>
+		</li>
+		<li>
+			<p>
+			STEP 2 - Once the file has been successfully uploaded and moved to it's final destination,
+			we are going to rename it to use it's fileId. 
+			So for example, test.png might become 101.png.
+			The reason for this is that it will prevent files that happen to have the same name from being overwritten.
+			Under this approach, it should be impossible for two files in the upload folder to have the same name.
+			Here is the code:
+			</p>
+			<pre>
+// Now that the image has been uploaded, let's rename it so that it
+// is named by the file id, rather than the original name
+$newFileName = $file['fileId'] . "." . $file['fileExtension'];
+$newFilePath = SERVER_UPLOAD_FOLDER . $newFileName;
+
+if( !rename($filePath, $newFilePath) ){
+	throw new Exception("Unable too rename file");
+}				
+			</pre>
+		</li>
+		<li>
+			<p>
+			STEP 3 - If we are updating an image that is already in our system, we'll want to display, like this:
+			</p>
+			<pre>
+if($file['fileId'] > 0 &amp;&amp; !empty($file['fileExtension'])){
+	$realFileName = $file['fileId'] . "." . $file['fileExtension'];
+	echo('&lt;img id="mainImg" src="' . UPLOAD_FOLDER . $realFileName .'" /&gt;');
+}
+			</pre>
+		</li>
+		<li>
+			<p>
+			STEP 4 - There are various errors that can occur in dealing with the image upload,
+			we'll see how these error messages are generated in the final step. But for now, here is the code to display them:
+			</p>
+			<pre>
+echo(isset($validationErrors['imageRequired']) ? wrapValidationMsg($validationErrors['imageRequired']) : "");
+echo(isset($validationErrors['invalidImageType']) ? wrapValidationMsg($validationErrors['invalidImageType']) : "");
+echo(isset($validationErrors['invalidImageSize']) ? wrapValidationMsg($validationErrors['invalidImageSize']) : "");
+			</pre>
+		</li>
+		<li>	
+			<p>
+			STEP 5 - Finally, here is the code that validates the file being uploaded.
+			Note that a file upload is not always required. For example, you may want to update the description for a file that you've already entered into the system.
+			</p>
+			<pre>
+// on inserts, there must be a file uploaded
+// http://php.net/manual/en/features.file-upload.errors.php
+if($file['fileId'] == 0 &amp;&amp; $_FILES['upload']['error'] == UPLOAD_ERR_NO_FILE){
+	$errors['imageRequired'] = "You must upload an image";
+}
+
+if($_FILES['upload']['error'] == UPLOAD_ERR_OK){
+	
+	// validate the file type
+	if( !in_array($_FILES['upload']['type'], $allowed_file_types) ){
+		$errors['invalidImageType'] = "The file must be an image.";
+	}
+	
+	// validate the file size
+	if($_FILES['upload']['size'] > $max_file_size){
+		$errors['invalidImageSize'] = "The file is too big.";
+	}
+}
+			</pre>
+		</li>
+	</ul>
+
+	<h3>Final Notes</h3>
+	<ul>
+		<li>
+			You may want to delete any files that you uploaded before you add and commit files in Git. 
+			It's better to leave those types of files out of the repository.
+		</li>
+		<li>
+			We should add JS validation in addition to server side validation - if you forget to add a desc and press save, you loose the selected file	
+		</li>
+		<li>
+			We might also want to ad JS code so that when an image is displayed, it should disappear if you use the file input to pick a new one.
+		</li>
+	</ul>
+
+	<h3>Follow Up Questions:</h3>
+	<ul>
+		<li>Do we have duplicated code in the FileDataAccess and PageDataAccess classes? If so, what could we do avoid duplicating code in these classes?</li>
+		<li>What is the purpose of the $_FILES super global array?</li>
+		<li>Why did we end up renaming the files (to use the fileId from the database) once they get uploaded?</li>
+	</ul>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

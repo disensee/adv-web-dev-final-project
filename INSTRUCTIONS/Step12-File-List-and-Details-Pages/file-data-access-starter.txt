@@ -1,0 +1,93 @@
+<?php
+class FileDataAccess{
+	
+	private $link;
+
+	// CONSTRUCTOR
+	function __construct($link){
+		$this->link = $link;
+	}
+
+	// We'll invoke this method when we encounter a database error
+	function handleError($msg){
+		throw new Exception($msg);
+	}
+
+	// Insert a file into the database
+	function insertFile($file){
+
+		// prevent SQL injection ('scrub' the $file param)
+
+		// create the SQL statement/query
+
+		// execute the query
+
+		// if the result is valid (not false)
+			// add the fileId to the $file array
+			// return the $file array
+		// if the result is false (not valid)
+			// invoke the handleError() method and pass in a msg as a param
+			// return false
+	}
+
+	// Get a listing of all files
+	function getFileList(){
+
+		// create the SQL statement/query
+		
+		// execute the query
+
+		// create a $fileList array
+
+		// loop through the rows 
+			// create a $file array
+			// populate the $file array with data from the database (use htmlentities() to prevent XSS attacks!)
+			// add the $file array to the $fileList array
+
+		// return the $fileList
+	}
+
+
+	// Get a file by it's ID
+	function getFileById($id){
+
+		// prevent SQL injection attack by 'scrubbing' the $id
+		
+		// create the SQL statement to select a file by it's fileId
+		
+
+		// execute the query and get the result
+		
+		// Check to see that we got 1 and only 1 row from the result
+		
+			// get the row from the result
+			
+			// create an array called $file
+			
+			// 'scrub' the columns in the row (use htmlentities() ) and transfer it into the $file array
+			
+			// return the $file
+			
+
+		// If we didn't get 1 row back, return false
+
+		
+	}
+
+	// updates a row in the files table
+	function updateFile($file){
+
+		// prevent SQL injection by 'scrubbing' the values in the $file array
+		
+		// build the SQL query
+		
+		// execute the query and get the results
+		
+		// If the result exists (not false), and return the $file
+		// If the result is false, then invoke the handleError() method and return false		
+	
+	}
+}
+
+
+
