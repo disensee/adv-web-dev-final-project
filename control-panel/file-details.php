@@ -2,6 +2,7 @@
 require_once("../includes/config.inc.php");
 require("authentication-check.inc.php");
 require_once("../includes/FileDataAccess.inc.php");
+require_once("../includes/ImageUploader.inc.php");
 
 $pageTitle = "Blog Details";
 $pageDescription = "";
@@ -78,19 +79,34 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
         $newFilePath = SERVER_UPLOAD_FOLDER . $newFileName;
 
         if( !rename($filePath, $newFilePath) ){
-            throw new Exception("Unable too rename file");
-        }
+            throw new Exception("Unable to rename file");
+		}
+		
+		// Create a thumbnail of the image 
+		// (this is basically step 3 from the image resizer demo)
+		$imgUploader = new ImageUploader($max_file_size, $allowed_file_types);
+		$thumbNailPath = SERVER_THUMBNAIL_FOLDER . $newFileName;
+		$resize_width = 150;								
+		$resize_height = 200;
+
+		// resize the image...
+		$resize_result = $imgUploader->resizeImage($newFilePath, $thumbNailPath, $resize_width, $resize_height);
+
+		// $resize_result will be an array that has some details about the final size of the image
+		if($resize_result ==  false){
+			throw new Exception("Unable to resize the image.");
+		}
                     
-                header("Location: " . PROJECT_DIR . "control-panel/file-list.php");
-                exit();
-            }
+		header("Location: " . PROJECT_DIR . "control-panel/file-list.php");
+		exit();
+	}
             
 
-        }else{
-            // we only accept GET and POST requests
-            header("Location: " . PROJECT_DIR . "error.php");
-            exit();
-        }
+}else{
+	// we only accept GET and POST requests
+	header("Location: " . PROJECT_DIR . "error.php");
+	exit();
+}
 
 require("../includes/header.inc.php");
 ?>

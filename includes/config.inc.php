@@ -15,6 +15,8 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	define("DB_NAME", "my-new-site");
 	define("UPLOAD_FOLDER", PROJECT_DIR . "uploaded-files/");
 	define("SERVER_UPLOAD_FOLDER", $_SERVER['DOCUMENT_ROOT'] . UPLOAD_FOLDER);
+	define("THUMBNAIL_FOLDER", UPLOAD_FOLDER . "thumbnails/");
+	define("SERVER_THUMBNAIL_FOLDER", SERVER_UPLOAD_FOLDER . "thumbnails/");
 }else{
     //settings for live site
     define("PROJECT_DIR", "/my-new-site/");
@@ -27,6 +29,8 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	define("DB_NAME", "my-new-site");
 	define("UPLOAD_FOLDER", PROJECT_DIR . "uploaded-files/");
 	define("SERVER_UPLOAD_FOLDER", $_SERVER['DOCUMENT_ROOT'] . UPLOAD_FOLDER);
+	define("THUMBNAIL_FOLDER", UPLOAD_FOLDER . "thumbnails/");
+	define("SERVER_THUMBNAIL_FOLDER", SERVER_UPLOAD_FOLDER . "thumbnails/");
 }
 //turn errors on if debug mode is true (code running on localhost)
 if(DEBUG_MODE){

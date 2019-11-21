@@ -79,6 +79,89 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
 
 require("../includes/header.inc.php");
 ?>
+<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+<script>
+window.addEventListener("load", function(){
+
+	// STEP 1
+	var imageFolderPath = "<?php echo(UPLOAD_FOLDER); ?>";
+	var cssPath = "<?php echo(PROJECT_DIR . ""); ?>styles/main.css";
+	var popup;
+  	
+  	// set up the tinymce editor
+  	tinymce.init({ 
+  		selector:'textarea[name="content"]', 
+  		height: 200,
+	  	menubar: false,
+	 	plugins: [
+		    'advlist autolink lists link image charmap print preview anchor textcolor',
+		    'searchreplace visualblocks code fullscreen',
+		    'insertdatetime media table contextmenu paste code help wordcount'
+	  	],
+	  	toolbar: 'insert | undo redo |  formatselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | code | help',
+	  	content_css: [cssPath] 
+  	});
+  	
+
+  	// STEP 2
+	// when the 'Insert Image' button is pressed, create a popup window
+	document.getElementById("btnInsertImg").addEventListener("click", function(){
+		createWindow(400,300);
+	});
+
+  	// STEP 3
+		// create a pop up window that displays the image-list page
+  	// (and handles clicks on the A tags in the image list page)
+	  function createWindow(width, height) {
+
+			// Add some pixels to the width and height:
+			width = width + 10;
+			height = height + 10;
+
+			// If the window is already open,
+			// resize it to the new dimensions:
+			if (window.popup && !window.popup.closed) {
+				window.popup.resizeTo(width, height);
+			}
+
+			// Set the window properties:
+			var specs = "location=no,scrollbars=no,menubar=no,toolbar=no,resizable=yes,left=0,top=0,width=" + width + ",height=" + height;
+
+			// Set the URL:
+			var url = "image-list.php"; // this will be changed to a .php file
+
+			// Create the pop-up window:
+			popup = window.open(url, "ImageWindow", specs);
+			popup.focus();
+
+			// use event delegation to listen for clicks in the popup window
+			popup.addEventListener("click", function(evt){
+
+				if(evt.target.classList.contains("insertImg")){
+					// if the target of the click event was one of our A tags,
+					// then extract the data from our custom attributes
+					var aTag = evt.target;
+					var imgName = aTag.dataset.filename;
+					var imgDesc = aTag.dataset.filedescription;
+					
+					insertImg(imgName, imgDesc);
+
+					popup.close();
+					
+				}
+
+			});
+		}
+
+  	// STEP 4
+  	// insert an image tag into the tinymce editor
+	function insertImg(imgName, imgDesc){
+		
+		var imgHtml = `<img src="${imageFolderPath}${imgName}" alt="${imgDesc}" />`;
+		tinymce.execCommand('mceInsertContent', false, imgHtml);
+	}
+});
+</script>
 <main>
 	<div class="content-frame">
 		<h3>Blog Details</h3>
@@ -104,6 +187,8 @@ require("../includes/header.inc.php");
 				<?php echo(isset($validationErrors['content']) ? wrapValidationMsg($validationErrors['content']) : ""); ?>
 			</label>
 			<textarea name="content"><?php echo($page['content']); ?></textarea>
+			<br>
+			<input type="button" value="Insert Image" id="btnInsertImg" />
 			
 			<label>
 				Published Date (mm/dd/yyyy)
