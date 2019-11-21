@@ -10,7 +10,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 	$passwordEntered = $_POST['txtPassword'] ?? NULL;
 
 	$userName = "disensee";
-	$password = "FinalProjectAWD2019!";
+	$password = "FirstNameLastName";
 
 	if($userNameEntered == $userName && $passwordEntered == $password){
         
