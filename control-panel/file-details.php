@@ -57,7 +57,7 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
             $filePath = SERVER_UPLOAD_FOLDER . $file['fileName'];
         
               // move the file from the tmp dir to it's final destination
-              if( !move_uploaded_file($_FILES['upload']['tmp_name'], $filePath) ){
+              if(!move_uploaded_file($_FILES['upload']['tmp_name'], $filePath) ){
                   throw new Exception("Unable to move uploaded file");
               }
         }
