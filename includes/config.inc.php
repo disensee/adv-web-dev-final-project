@@ -21,12 +21,12 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
     //settings for live site
     define("PROJECT_DIR", "/my-new-site/");
     define("IMAGES_DIR", PROJECT_DIR . "images/");
-    define("DEBUG_MODE", true);
+    define("DEBUG_MODE", false);
 	define("ADMIN_EMAIL", "isenseed@students.westerntc.edu");
-	define("DB_HOST", "xxxxxx");
-	define("DB_USER", "xxxxxx");
-	define("DB_PASSWORD", "xxxxxx");
-	define("DB_NAME", "my-new-site");
+	define("DB_HOST", "localhost");
+	define("DB_USER", "dylanise_dylan");
+	define("DB_PASSWORD", "lI5w~#U[Le*)");
+	define("DB_NAME", "dylanise_my-new-site");
 	define("UPLOAD_FOLDER", PROJECT_DIR . "uploaded-files/");
 	define("SERVER_UPLOAD_FOLDER", $_SERVER['DOCUMENT_ROOT'] . UPLOAD_FOLDER);
 	define("THUMBNAIL_FOLDER", UPLOAD_FOLDER . "thumbnails/");
