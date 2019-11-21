@@ -143,6 +143,21 @@ class FileDataAccess{
 		}
 		return false;
 	}
+
+	// extract the extension from a file name
+	// Note: In hindsight, I should have used pathinfo() for this (it's a function that's built into PHP)
+	function getFileExtension($fileName){
+
+		$parts = explode(".", $fileName);
+		
+		//Not sure if we should really throw an exception here!
+		if(count($parts) < 2){
+			$this->handle_error("$fileName has no file extension");
+		}
+
+		return array_pop($parts);
+	}
+		
 }
 
 

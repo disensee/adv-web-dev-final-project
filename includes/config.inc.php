@@ -13,6 +13,8 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	define("DB_USER", "root");
 	define("DB_PASSWORD", "");
 	define("DB_NAME", "my-new-site");
+	define("UPLOAD_FOLDER", PROJECT_DIR . "uploaded-files/");
+	define("SERVER_UPLOAD_FOLDER", $_SERVER['DOCUMENT_ROOT'] . UPLOAD_FOLDER);
 }else{
     //settings for live site
     define("PROJECT_DIR", "/my-new-site/");
@@ -23,6 +25,8 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	define("DB_USER", "xxxxxx");
 	define("DB_PASSWORD", "xxxxxx");
 	define("DB_NAME", "my-new-site");
+	define("UPLOAD_FOLDER", PROJECT_DIR . "uploaded-files/");
+	define("SERVER_UPLOAD_FOLDER", $_SERVER['DOCUMENT_ROOT'] . UPLOAD_FOLDER);
 }
 //turn errors on if debug mode is true (code running on localhost)
 if(DEBUG_MODE){

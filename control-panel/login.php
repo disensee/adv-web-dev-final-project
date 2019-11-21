@@ -9,8 +9,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 	$userNameEntered = $_POST['txtUserName'] ?? NULL;
 	$passwordEntered = $_POST['txtPassword'] ?? NULL;
 
-	$userName = "you";
-	$password = "opensesame";
+	$userName = "disensee";
+	$password = "FinalProjectAWD2019!";
 
 	if($userNameEntered == $userName && $passwordEntered == $password){
         

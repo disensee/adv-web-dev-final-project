@@ -11,6 +11,8 @@ require("../includes/header.inc.php");
 	<div class="content-frame">
 		<h3>Control Panel</h3>
 		<a href="blog-list.php">Blog List</a>
+		<br>
+		<a href="file-list.php">File List</a>
 	</div>
 </main>
 		
