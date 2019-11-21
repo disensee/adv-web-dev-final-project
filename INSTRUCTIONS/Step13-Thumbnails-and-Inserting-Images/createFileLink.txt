@@ -1,0 +1,20 @@
+// creates an anchor tag for a file/image that will be inserted into a blog post
+function createFileLink($file){
+
+	$realFileName = $file['fileId'] . "." . $file['fileExtension']; 
+	// It would be better to pull the 'real file name' from the database query
+	// We can discuss this, but for now, we'll get the real file name by doing this
+
+	// We need to escape any quotes in the file description, since they
+	// could mess up the attribute in the anchor tag we are creating
+	$description = addslashes($file['fileDescription']);
+
+	$html = "<a";
+	$html .= " href=\"javascript:void(0)\" ";
+	$html .= " class=\"insertImg\"";
+	$html .= " data-filename=\"$realFileName\"";
+	$html .= " data-filedescription=\"$description\"";
+	$html .= ">INSERT</a>";
+
+	return $html; 
+}

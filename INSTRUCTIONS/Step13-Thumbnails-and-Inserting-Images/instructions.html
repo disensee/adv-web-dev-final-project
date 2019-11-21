@@ -1,0 +1,279 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Thumbnails and Inserting Images into Blog Posts</title>
+</head>
+<body>
+	<h1>Thumbnails and Inserting Images into Blog Posts</h1>
+	<p>
+		In this step we'll assemble some parts to complete the blog-details.php page.
+		We'll use a PHP class to allow us to create thumbnails of images that are uploaded.
+		And we'll also use a library for adding a <b>rich text editor</b> to our blog details page.
+	</p>
+	<h3>Pre-Reqs</h3>
+	<ul>
+		<li>TinyMCE Demo</li>
+		<li>ImageResizer Demo</li>
+		<li>Understanding of JavaScript Event Delegation</li>
+	</ul>
+	
+	<h3>Getting Started</h3>
+	<ol>
+		<li>
+			<p>
+				Before we start, lets delete any files in the files table.
+				Open PHPMyAdmin and run this command in the SQL tab:
+			</p>
+			<pre>
+TRUNCATE TABLE files;	
+			</pre>
+		</li>
+		<li>
+			<p>
+			Also, delete any files that have been uploaded to the <b>uploaded-files</b> folder.
+			If you do not have a folder named <b>uploaded-files</b>, then add it to your <b>my-new-site</b> folder.
+			We'll put all uploaded files into this folder.
+			</p>
+		</li>
+	</ol>
+	<h3>
+		Creating Thumbnails when Images are Uploaded
+	</h3>
+	<ol>
+		<li>
+			Create a folder named <b>thumbnails</b> inside the 'uploaded-files' folder.
+			All of our thumbnail images will be stored here.
+		</li>
+		<li>
+			Add these constants to the config file (for both the DEV and LIVE environments).
+			<pre>
+define("THUMBNAIL_FOLDER", UPLOAD_FOLDER . "thumbnails/");
+define("SERVER_THUMBNAIL_FOLDER", SERVER_UPLOAD_FOLDER . "thumbnails/");
+			</pre>
+		</li>
+		<li>
+			In the 'includes' folder, create a file called <b>ImageUploader.inc.php</b>
+			and put <a href="image-uploader-class.txt">this</a> code in it.
+			You don't need to understand any code in this class (unless you want to).
+			All you need to know is that it can be used to resize images, and you need to know how to use it's API.
+			This means that you know how to call it's methods, pass in the proper parameters, and work with the return values.
+			It might seem strange to use code that you don't understand in a project, but it happens often.
+			There's a saying among programmers; "don't re-invent the wheel". 
+			Good programmers will learn how to use existing tools that are available before trying to build them from scratch.
+			Just be careful, when you use other people's code, you are putting a lot of trust in them.
+		</li>
+		<li>
+			Open file-details.php and include the ImageUploader class at the top of the page, like this:
+			<pre>
+require_once("../includes/ImageUploader.inc.php");				
+			</pre>
+		</li>
+		<li>
+			Now, in the file-details.php page, find the code that renames our uploaded file
+			(it's in an IF statement that throws an exception if the rename fails, the exception message is: Unable too rename file).
+			Underneath that IF statement, add this code:
+			<pre>
+// Create a thumbnail of the image 
+// (this is basically step 3 from the image resizer demo)
+$imgUploader = new ImageUploader($max_file_size, $allowed_file_types);
+$thumbNailPath = SERVER_THUMBNAIL_FOLDER . $newFileName;
+$resize_width = 150;								
+$resize_height = 200;
+
+// resize the image...
+$resize_result = $imgUploader-&gt;resizeImage($newFilePath, $thumbNailPath, $resize_width, $resize_height);
+
+// $resize_result will be an array that has some details about the final size of the image
+if($resize_result ==  false){
+	throw new Exception("Unable to resize the image.");
+}
+			</pre>
+		</li>
+		<li>
+			Open the file-details.php page in the browser and upload an image.
+			Then check the thumbnails folder to make sure the thumbnail of the image was properly created.
+		</li>
+	</ol>
+ 
+
+	<h3>Create the Image List Page</h3>
+	<p>
+		I'm going to keep you in the dark for a bit regarding how we'll use this page.
+		But if you have seen the tinyMce demo, you might be able to predict what we are getting at.
+	</p>
+	<ol>
+		<li>
+			First, make sure you have at least two images uploaded.
+			If not, open the file-details page and upload a few images.
+		</li>
+		<li>
+			Create a file in the control-panel folder and call it <b>image-list.php</b>.
+		</li>
+		<li>
+			Paste <a href="image-list.txt">this</a> code into the page.
+		</li>
+		<li>
+			Open image-list.php in the browser. You'll have to login before you can view the page. 
+			You should see a table displaying your thumbnail images.
+		</li>
+		<li>
+			Take a look at the code for this page, and note the following:
+			<ul>
+				<li>
+					We are reusing code (rather than duplicating it) by using the getFileList() method of the FileDataAccess class.
+				</li>
+				<li>
+					In the html code, we set up a table, and then use PHP to loop through the files and create a table row for each one.
+				</li>
+				<li>
+					In the createTableRow() function, we invoke the createFileLink() function in order to fill in the last column in each row.
+					Right now, the createFileLink() method simply returns a string that says "TODO", but we'll add code to change that in the next step.
+					I wanted you to get an overall idea of how the page works before we dive into the gory details.
+				</li>
+			</ul>
+		</li>
+		<li>
+			Replace the createFileLink() function <a href="createFileLink.txt">this</a> code.
+		</li>
+		<li>
+			Let's talk about the code that's in this function.
+			<ul>
+				<li>
+					First, it will return a string that looks something like this:
+					<pre>
+&lt;a href="javascript:void(0)"  class="insertImg" data-filename="1.png" data-filedescription="Code sample 1"&gt;INSERT&lt;/a&gt;						
+					</pre>
+				</li>
+				<li>
+					<p>
+					We've put <b>javascript:void(0)</b> as the value of the HREF attribute because we don't actually want the link to take us to a different page.
+					The book for this course has an example that uses a similar approach (chapter 11), where it used something like this for the href attribute:
+					<b>href="javascript:someFunction()"</b>.
+					We could have used this approach, but there is a better way that uses JavaScript <b>event delegation</b>.
+					</p>
+				</li>
+				<li>
+					Each anchor tag will have a class attribute set to <b>insertImg</b>.
+					You'll see how we make use of this soon (when we use event delegation).
+				</li>
+				<li>
+					<p>
+					We've embedded some <b>custom attributes</b> into the anchor tag (data-filename and data-filedescription).
+					<b>Embedding custom attributes into tags is an extremely powerful tool!</b>
+					Custom attributes allow you to bind certain information to your UI, by adding attributes to HTML tags (this is a form of <b>data-binding</b>).
+					Then you can use JavaScript code to access this information.
+					Note that these <b>a</b> tags are created by our server-side code (PHP).
+					So it allows us to transfer information from our server-side code to our client-side code (we are using PHP code to generate client-side code).
+					</p>
+					<p>
+					When you add your own custom attributes to a tag, you should prefix the attribute name with <b>data-</b>.
+					For more information, <a href="https://www.sitepoint.com/how-why-use-html5-custom-data-attributes/" target="_blank">click here</a>. 
+					We'll see how these custom attributes will be used soon.
+					</p>
+					<p><b>Note: you cannot use capital letters in custom attribute names.</b> Read the link for more info.</p>
+				</li>
+				<li>
+					We'll make use of these custom attributes soon!
+				</li>
+			</ul>
+		</li>
+	</ol>
+
+	<h3>Update the Blog Details Page</h3>
+	<ol>
+		<li>
+			Open the blog-details.php page and add <a href="script-tags.txt">this</a> code to the HTML just above the opening MAIN tag.	
+			Here are some notes regarding this bit of code:
+			<ul>
+				<li>The first script tag imports the tinyMce library</li>
+				<li>
+					<p>
+						The code in the second script tag waits for the page to load, and then uses PHP code to set some variables in JavaScript.
+						Some programmers would have a real problem with this (they might say that you should never use PHP to generate JavaScript code).
+						But it can be done, and it's very convenient for us in this case!
+					</p>
+					<p>
+						Finally, the last statment (which spans quite a few lines) sets up the tinyMce editor.
+						Note that the 'selector' option is targeting the textarea tag that displays the content of a blog page.
+					</p>
+				</li>
+			</ul>
+		</li>
+		<li>
+			Load the blog details page in the browser, and make sure that the tinyMce editor is getting initialized properly.
+		</li>
+		<li>
+			Add this code under the 'content' textarea (the textarea tag that has it's 'name' attribute set to 'content'):
+			<pre>
+&lt;br&gt;
+&lt;input type="button" value="Insert Image" id="btnInsertImg" /&gt;
+			</pre>
+			When this button is pressed, we'll open a popup window that displays all the images that we've uploaded.
+			<br><br>
+		</li>
+		<li>
+			Now let's add the event handler for the button we just added. 
+			Paste this code just under the comment that says STEP 2:
+			<pre>
+// when the 'Insert Image' button is pressed, create a popup window
+document.getElementById("btnInsertImg").addEventListener("click", function(){
+	createWindow(400,300);
+});
+			</pre>
+			Note that if you run the code now, you'll get an error when you click the button
+			because we have not yet defined the createWindow() function. 
+			We'll do that next.
+		</li>
+		<li>
+			<p>
+			Paste <a href="createWindow.txt">this</a> code just under the comment that says STEP 3.
+			This code should look familiar (I got it straight out of the book for this class, I just and made a few tweaks to it).
+			It creates a popup window and then uses <b>event delegation</b> to listen for clicks in the window.
+			If a 'click' event occurs on an A tag that has a class of 'insertImg', our event handler function will extract
+			the data embedded in the custom attributes of the tag.
+			</p>
+			<p>
+				Go ahead and try it out.
+				But note that you'll get an error when you click on one of the A tags in the popup window.
+				That's because we haven't defined the insertImg() function yet. 
+				We'll do that next.
+			</p>
+		</li>
+		<li>
+			<p>
+				Paste <a href="insertImg.txt">this</a> code under the comment that says STEP 4.
+				Note that it uses the new 'template' syntax in JavaScript to create an IMG tag that will be inserted into the tinyMce editor.
+				This is JavaScript's way of doing <b>variable interpolation</b> (remember that we talked about variable interpolation when we first started learning PHP).
+			</p>
+		</li>
+		<li>
+			Finally, try out the page and insert an image or two into a blog post.
+			Then make sure to view the blog post in the front end.
+		</li>
+		<li>
+			Note that if our project folder paths are different on dev and live, then
+			we will have some problems to overcome. The image links won't work on both.
+			But we could fix this by using a regular expression when the blog-details page is posted.
+			The reg exp could search and replace all instances of the path to the uploaded-files folder with something like UPLOAD_FOLDER before putting the data in the database.
+			Then, when we fetch the blog page from the database we could replace all instances of UPLOAD_FOLDER with the path that is appropriate for the environment that the code is running on.
+		</li>
+	</ol>
+	<h3>Follow Up Questions</h3>
+	<ul>
+		<li>
+			In the image-list.php page, there is a comment (in the createTableRow() function)
+			about how it would have been better pull the 'real file name' in our database query.
+			How could we have done this? Why would it have been a better approach?
+		</li>
+		<li>
+			What is <b>event delegation</b>?
+		</li>
+		<li>
+			What are <b>custom attributes</b>?
+		</li>
+		<li>
+			Why is it important for web developers to know how to set up a rich text editor?
+		</li>
+	</ul>
+</body>
+</html>

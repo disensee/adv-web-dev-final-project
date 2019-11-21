@@ -1,0 +1,6 @@
+	// insert an image tag into the tinymce editor
+	function insertImg(imgName, imgDesc){
+		
+		var imgHtml = `<img src="${imageFolderPath}${imgName}" alt="${imgDesc}" />`;
+		tinymce.execCommand('mceInsertContent', false, imgHtml);
+	}
