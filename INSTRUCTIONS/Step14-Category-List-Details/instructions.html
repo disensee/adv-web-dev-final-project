@@ -1,0 +1,137 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Category List and Details Pages</title>
+</head>
+<body>
+	<h1>Category List and Details Pages</h1>
+	<p>
+		You've seen a few different examples of how to not only retreive data from the database and display it on a web page,
+		but also to create HTML forms that allow inserting and updating rows in the database.
+	</p>
+	<p>
+		In this step you'll create pages that allow users to add and edit categories of
+		blog posts. We created the 'categories' table back when we first set up the database for this project.
+		Now you will build a few web pages that will allow users to add and edit new categories of blog posts.
+	</p>
+	<p>
+		In theory, this step should be quite straight forward, albeit a bit tedious.
+		We are just following the same algorithm that you've seen with the blog and file pages in the control panel.
+		If you can get through this step, you can adapt it to many situations when building a dynamic website.
+		In my career I've used this algorithm countless times. So many times, that at one point
+		I even wrote a script that allowed me to enter the column names (and data types) for a table, and it would generate all the PHP code for me!
+	</p>
+	<h3>Create a Category List Page</h3>
+	<p>We'll create a page that lists all the rows from the categories table, it will look like <a href="screen-shots/category-list.png">this</a>.</p>
+	<ul>
+		<li>In the 'control-panel' folder create a file named <b>category-list.php</b></li>
+		<li>
+			You could cut and paste code from the blog list page, just be extra careful, there are lots of lines of code that need to be updated.
+			It might be better to just use the blog list page as a guide and type everything into the category list page.
+		</li>
+		<li>
+			Make sure the page is secure, meaning that the user must log in before viewing the page.			
+		</li>
+		<li>
+			When an EDIT link is clicked, the user should be directed to a page called <b>category-details.php</b>
+			(we'll create that page a little later).
+			When you generate the EDIT links, make sure to add a query string param to the URL called <b>categoryId</b> and set it to the id of the category that is being displayed in each row.
+			Also, the Add New Category link should direct the user to category-details.php.
+		</li>
+		<li>
+			Open the control-panel homepage and add a link to the category-list page.
+		</li>
+	</ul>
+
+	<h3>Add Methods to the CategoryDataAccess Class</h3>
+	<ul>
+		<li>
+			Create a method named <b>getCategoryById</b>.
+			It should take a param for the id of the category to fetch.
+			And it should return an associative array that contains the categoryId, name, and active columns from the categories table.
+			If something goes wrong with the query, the method should return false.
+		</li>
+		<li>
+			Add the following code to the category-data-access-tests.php page to confirm the method is working properly.
+			Note that one of the tests that we put in this page previously may fail!
+			At that time we weren't sure if a method should throw an error or not.
+			<pre>
+echo("&lt;br&gt;GET CATEGORY BY ID");
+$cat = $cda-&gt;getCategoryById(1);
+var_dump($cat);
+			</pre> 
+		</li>
+		<li>
+			Create a method named <b>insertCategory</b>.
+			It should take an associative array as a param. 
+			The keys in this array should be <b>name</b> and <b>active</b>.
+			It should return the same assoc array, but the categoryId assigned by the database should be added to it.
+		</li>
+		<li>
+			Add the following code to the category-data-access-tests.php page to confirm the method is working properly.
+			<pre>
+echo("&lt;br&gt;INSERT CATEGORY");
+
+// create a 'category' (assoc array) to insert
+$cat = array();
+$cat['name'] = "A NEW CATEGORY!";
+$cat['active'] = "yes";
+
+// insert it...
+$cat = $cda-&gt;insertCategory($cat);
+var_dump($cat);
+			</pre> 
+		</li>
+		<li>
+			Create a method named <b>updateCategory</b>.
+			It should take an associative array as a param. 
+			The keys in this array should be <b>categoryId</b>, <b>name</b>, and <b>active</b>.
+			It should return the same assoc array.
+		</li>
+		<li>
+			Add the following code to the category-data-access-tests.php page to confirm the method is working properly.
+			<pre>
+echo("&lt;br&gt;UPDATE CATEGORY");
+
+$cat['name'] = "AN UPDATED CATEGORY!";
+$cat['active'] = "no";
+
+// update it...
+$cat = $cda-&gt;updateCategory($cat);
+var_dump($cat);
+			</pre> 
+		</li>
+	</ul>
+
+	<h3>Create a Category Details Page</h3>
+	<p>We'll create a page that looks like <a href="screen-shots/category-details.png">this</a>.</p>
+	<ul>
+		<li>Create a file in the 'control-panel' called <b>category-details.php</b></li>
+		<li>It will work in much the same way as the other 'details' pages we've created.</li>
+		<li>Be careful, take your time, ask for help!</li>
+	</ul>
+
+
+	
+	
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

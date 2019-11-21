@@ -13,6 +13,8 @@ require("../includes/header.inc.php");
 		<a href="blog-list.php">Blog List</a>
 		<br>
 		<a href="file-list.php">File List</a>
+		<br>
+		<a href="category-list.php">Category List</a>
 	</div>
 </main>
 		
