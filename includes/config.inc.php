@@ -1,4 +1,12 @@
 <?php
+
+if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
+	$redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	header('HTTP/1.1 301 Moved Permanently');
+	header('Location: ' . $redirect);
+	exit();
+}
+
 session_start();
 set_error_handler("customErrorHandler");
 
@@ -31,12 +39,6 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	define("SERVER_UPLOAD_FOLDER", $_SERVER['DOCUMENT_ROOT'] . UPLOAD_FOLDER);
 	define("THUMBNAIL_FOLDER", UPLOAD_FOLDER . "thumbnails/");
 	define("SERVER_THUMBNAIL_FOLDER", SERVER_UPLOAD_FOLDER . "thumbnails/");
-	if(empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == "off"){
-		$redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-		header('HTTP/1.1 301 Moved Permanently');
-		header('Location: ' . $redirect);
-		exit();
-	}
 }
 //turn errors on if debug mode is true (code running on localhost)
 if(DEBUG_MODE){
