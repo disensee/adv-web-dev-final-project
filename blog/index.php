@@ -9,12 +9,20 @@ require("../includes/header.inc.php");
 $pda = new PageDataAccess(getDBLink());
 $activePages = $pda->getPageList();
 
+if(!empty($_POST['txt_search'])){
+	header('Location: search-results.php');
+}
+
 ?>
 		<main>
 
 			<div class="content-frame">
 				
 				<h1>Blog</h1>
+				<form id="blogSearch" method ="POST" name="search" action="">
+					<input type="text" name="txt_search" placeholder="Search...">
+					<input type="submit" name="btn_search" value="Search">
+				</form>
 				<?php echo(createBlogList($activePages)); ?>
 
 			</div>
