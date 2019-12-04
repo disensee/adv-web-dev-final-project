@@ -8,6 +8,10 @@ class PageDataAccess{
 		$this->link = $link;
 	}
 
+	function getLink(){
+		return $this->link;
+	}
+
 	// We'll invoke this method when we encounter a database error
 	function handleError($msg){
 		throw new Exception($msg);
