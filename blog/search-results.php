@@ -32,10 +32,9 @@ if(isset($_POST['btn_search'])){
     if($num_rows > 0){
         while($page = mysqli_fetch_assoc($result)){
             $html = "<div class='article_container'>";
-            $html .= "<h1>{$page['title']}</h1>";
+            $html .= "<h1><a href=\"blog-post.php?pageId={$page['pageId']}\">{$page['title']}</h1></a>";
             $html .= "<p>{$page['description']}</p>";
             //$html .= "<p>{$page['content']}</p>";
-            $html .= "<a href=\"blog-post.php?pageId={$page['pageId']}\">Visit</a>";
             $html .= "</div>";
 
             echo $html;
@@ -47,3 +46,10 @@ if(isset($_POST['btn_search'])){
 
 ?>
 </div>
+<?php
+if(!empty($sideBar)){
+	require("../includes/" . $sideBar);
+}
+
+require("../includes/footer.inc.php");
+?>

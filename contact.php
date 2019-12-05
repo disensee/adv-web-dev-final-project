@@ -14,15 +14,25 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 	if(validateContactData($firstName, $lastName, $email, $comments)){
 
-		// If the data is valid, then put it into a single string to send as an email 
-		$msg = "Name: $firstName $lastName <br>";
-		$msg .= "Email: $email <br>";
-		$msg .= "Comments: $comments";  
+		$scrubbed = array_map('prevent_spam', $_POST);
 		
-		sendEmail(ADMIN_EMAIL, "Contact Form", $msg , "From: " . $email); // NOTE: we can uncomment the third param after we update the sendEmail() function!!!
-		header("Location: " . PROJECT_DIR . "contact-confirmation.php");
-		exit();	
+		if(!empty($scrubbed['txtFirstName']) && !empty($scrubbed['txtLastName']) && !empty($scrubbed['txtEmail']) && !empty($scrubbed['txtComments'])){
+
+			$msg = "First Name: {$scrubbed['txtFirstName']}\nLast Name: {$scrubbed['txtLastName']}\nEmail: {$scrubbed['txtEmail']}\nComments: {$scrubbed['txtComments']}";
+			$msg = wordwrap($body, 70);
+
+			// If the data is valid, then put it into a single string to send as an email 
+			// $msg = "Name: $firstName $lastName <br>";
+			// $msg .= "Email: $email <br>";
+			// $msg .= "Comments: $comments";
 		
+			sendEmail(ADMIN_EMAIL, "Contact Form", $msg , "From: " . $email); // NOTE: we can uncomment the third param after we update the sendEmail() function!!!
+			header("Location: " . PROJECT_DIR . "contact-confirmation.php");
+			$scrubbed = [];
+			exit();
+		}else{
+			echo('<p style = "font-weight: bold; color: #C00">Invalid contact form data</p>');
+		}	
 	}else{
 
 		// Foul play suspected (the client-side validation has been bypassed)!
@@ -47,28 +57,28 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 				            <td align="right" valign="bottom">First Name:</td>
 				            <td>
 				                <div class="validation-message" id="vFirstName"></div>
-				                <input type="text" id="txtFirstName" name="txtFirstName">
+				                <input type="text" id="txtFirstName" name="txtFirstName" value="<?php echo($scrubbed['txtFirstName']) ?? "";?>">
 				            </td>
 				        </tr>
 				        <tr>
 				            <td align="right" valign="bottom">Last Name:</td>
 				            <td>
 				                <div class="validation-message" id="vLastName"></div>
-				                <input type="text" id="txtLastName" name="txtLastName">
+				                <input type="text" id="txtLastName" name="txtLastName" value="<?php echo($scrubbed['txtLastName']) ?? "";?>">
 				            </td>
 				        </tr>
 				        <tr>
 				            <td align="right" valign="bottom">Email:</td>
 				            <td>
 				                <div class="validation-message" id="vEmail"></div>
-				                <input type="text" id="txtEmail" name="txtEmail">
+				                <input type="text" id="txtEmail" name="txtEmail" value="<?php echo($scrubbed['txtEmail']) ?? "";?>">
 				            </td>
 				        </tr>
 				        <tr>
 				            <td align="right" valign="top">Comments:</td>
 				            <td>
 				                <div class="validation-message" id="vComments"></div>
-				                <textarea id="txtComments" name="txtComments"></textarea>
+				                <textarea id="txtComments" name="txtComments"><?php echo($scrubbed['txtComments']) ?? "";?></textarea>
 				            </td>
 				        </tr>
 				        <tr>
@@ -104,6 +114,20 @@ function validateContactData($firstName, $lastName, $email, $comments){
 	}
 
 	return true;
+}
+
+function prevent_spam($value){
+	$very_bad = ['to:', 'cc:', 'bcc:', 'content-type:', 'mime-version:', 'multipart-mixed:', 'content-transfer-encoding:'];
+
+	foreach($very_bad as $v){
+		if(stripos($value, $v) !== false){
+			return '';
+		}
+	}
+
+	$value = str_replace(["\r", "\n", "%0a", "%0d"], ' ', $value);
+
+	return trim($value);
 }
 ?>
 
