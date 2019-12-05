@@ -9,9 +9,34 @@ require("../includes/header.inc.php");
 $pda = new PageDataAccess(getDBLink());
 $activePages = $pda->getPageList();
 
-// if(!empty($_POST['txt_search'])){
-// 	header('Location: search-results.php');
-// }
+$display = 5;
+
+var_dump($_GET);
+
+if(isset($_GET['p']) && is_numeric($_GET['p'])){ //number of posts already determined
+	$pages = $_GET['p'];
+}else{ //need to deterimine amount of pages
+
+	//count the number of records:
+	$qStr = "SELECT COUNT(pageId) FROM pages";
+	$result = @mysqli_query($pda->getLink(), $qStr);
+	$row = @mysqli_fetch_array($result, MYSQLI_NUM);
+	$records = $row[0];
+
+	//calculate the number of pages
+	if($records > $display){//more than one page
+		$pages = ceil($records/$display);
+	}else{
+		$pages = 1;
+	}
+}
+
+//Determine where in the database to start returning results
+if(isset($_GET['s']) && is_numeric($_GET['s'])){
+	$start = $_GET['s'];
+}else{
+	$start = 0;
+}
 
 ?>
 		<main>

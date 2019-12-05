@@ -34,7 +34,7 @@ require("../includes/header.inc.php");
 				<article>
 					<i><?php echo($page['publishedDate']); ?></i>
 					<h3><?php echo($page['title']); ?></h3>
-					<?php echo($page['content']); ?>
+					<p><?php echo($page['content']); ?></p>
 				</article>
 
 			</div>

@@ -11,10 +11,9 @@ $pda = new PageDataAccess(getDBLink());
 
 <h1>Search Results</h1>
 
-<div class="search_result_containter">
+<div class="search-result-container">
 <?php
 
-//var_dump($_POST);
 
 if(isset($_POST['btn_search'])){
     $search = mysqli_real_escape_string($pda->getLink(), $_POST['txt_search']);

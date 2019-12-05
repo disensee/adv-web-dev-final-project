@@ -31,7 +31,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 			$scrubbed = [];
 			exit();
 		}else{
-			echo('<p style = "font-weight: bold; color: #C00">Invalid contact form data</p>');
+			$spam_error = '<p style = "font-weight: bold; color: #C00">Invalid contact form data</p>';
 		}	
 	}else{
 
@@ -50,7 +50,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 			<div class="content-frame">
 				
 				<h1>Contact Me</h1>
-				
+				<?php echo($spam_error) ?? "";?>
 				<form id="contactForm" method="POST" action="">
 				    <table border="1">
 				        <tr>
