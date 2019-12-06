@@ -45,6 +45,7 @@ class PageDataAccess{
 
 		return $pageList;
 	}
+
 	// Get a page by it's id
 	function getPageById($id){
 
