@@ -86,6 +86,7 @@ class PageDataAccess{
 		echo(createBlogList($pageList));
 		//Make the links to other pages if necessary
 		if($pages > 1){
+			echo('<div id="blog-page-container"');
 			echo('<br><p>');
 	
 			//determine what page the script is on
@@ -110,6 +111,7 @@ class PageDataAccess{
 			}
 	
 			echo('</p>');
+			echo('</div>');
 		}
 	}
 

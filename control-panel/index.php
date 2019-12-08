@@ -9,12 +9,14 @@ require("../includes/header.inc.php");
 ?>
 <main>
 	<div class="content-frame">
-		<h3>Control Panel</h3>
-		<a href="blog-list.php">Blog List</a>
-		<br>
-		<a href="file-list.php">File List</a>
-		<br>
-		<a href="category-list.php">Category List</a>
+		<div class="control-panel-list">
+			<h3>Control Panel</h3>
+			<a href="blog-list.php">Blog List</a>
+			<br>
+			<a href="file-list.php">File List</a>
+			<br>
+			<a href="category-list.php">Category List</a>
+		</div>
 	</div>
 </main>
 		

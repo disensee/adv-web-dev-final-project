@@ -16,7 +16,7 @@ $contentClass = empty($sideBar) ? "single-column" : "";
 </head>
 <body>
 	<header>
-		<h1>Welcome To My Web Site</h1>
+		<h1>Hello. I'm Dylan.</h1>
 	</header>
 	<nav id="main-nav">
 		<ul>

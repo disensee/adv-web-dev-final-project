@@ -9,7 +9,7 @@ require("../includes/header.inc.php");
 $pda = new PageDataAccess(getDBLink());
 ?>
 
-<h1>Search Results</h1>
+<h3>Search Results</h3>
 
 <div class="search-result-container">
 <?php
@@ -27,13 +27,12 @@ if(isset($_POST['btn_search'])){
     $num_rows = mysqli_num_rows($result);
 
     echo("There are " . $num_rows . " result(s)");
-    echo("<br>");
+    echo("<br> <br>");
     if($num_rows > 0){
         while($page = mysqli_fetch_assoc($result)){
-            $html = "<div class='article_container'>";
-            $html .= "<h1><a href=\"blog-post.php?pageId={$page['pageId']}\">{$page['title']}</h1></a>";
+            $html = "<div class='article-container'>";
+            $html .= "<h4><a href=\"blog-post.php?pageId={$page['pageId']}\">{$page['title']}</h4></a>";
             $html .= "<p>{$page['description']}</p>";
-            //$html .= "<p>{$page['content']}</p>";
             $html .= "</div>";
 
             echo $html;
@@ -46,9 +45,5 @@ if(isset($_POST['btn_search'])){
 ?>
 </div>
 <?php
-if(!empty($sideBar)){
-	require("../includes/" . $sideBar);
-}
-
 require("../includes/footer.inc.php");
 ?>

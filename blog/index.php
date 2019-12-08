@@ -1,7 +1,7 @@
 <?php
 require_once("../includes/config.inc.php");
 require_once("../includes/PageDataAccess.inc.php");
-$pageTitle = "Blog";
+$pageTitle = "Blog | dylanisensee.com";
 $pageDescription = "Welcome to my blog. This page is where I will make blog posts about my interests.";
 $sideBar = "hobbies-sidebar.inc.php";
 require("../includes/header.inc.php");
@@ -24,13 +24,12 @@ if(isset($_GET['s']) && is_numeric($_GET['s'])){
 
 			<div class="content-frame">
 				
-				<h1>Blog</h1>
+				<h3>Blog</h3>
 				<form id="blogSearch" method ="POST" action="search-results.php">
 					<input type="text" name="txt_search" placeholder="Search...">
 					<input type="submit" name="btn_search" value="Search">
 				</form>
 				<?php echo($pda->createPaginatedList($start, $display)); ?>
-
 			</div>
 			
 		</main>
@@ -48,7 +47,7 @@ function createBlogList($pages){
 	$html = "<ul class=\"blog-list\">";
 
 	foreach ($pages as $p) {
-		$html .= "<li>";
+		$html .= "<li class='blog-page-list'>";
 		$html .= 	"<a href=\"blog-post.php?pageId=" . $p['pageId'] . "\">";
 		$html .= 		$p['title'];
 		$html .= 	"</a>";

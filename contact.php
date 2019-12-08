@@ -1,6 +1,6 @@
 <?php
 require_once("includes/config.inc.php");
-$pageTitle = "Contact Me";
+$pageTitle = "Contact | dylanisensee.com";
 $pageDescription = "Contact me. I'll get back to you ASAP.";
 $sideBar = "hobbies-sidebar.inc.php";
 require("includes/header.inc.php");
@@ -31,7 +31,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 			$scrubbed = [];
 			exit();
 		}else{
-			$spam_error = '<p style = "font-weight: bold; color: #C00">Invalid contact form data</p>';
+			$spam_error = '<p style = "font-weight: bold; color: red">Invalid contact form data</p>';
 		}	
 	}else{
 
@@ -49,7 +49,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 			<div class="content-frame">
 				
-				<h1>Contact Me</h1>
+				<h3>Contact Me</h3>
 				<?php echo($spam_error) ?? "";?>
 				<form id="contactForm" method="POST" action="">
 				    <table border="1">

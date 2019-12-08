@@ -1,6 +1,6 @@
 <?php
 require_once("includes/config.inc.php");
-$pageTitle = "Welcome to my site";
+$pageTitle = "Home | dylanisensee.com";
 $pageDescription = "Welcome to my webiste, it's about me, my hobbies, and web development";
 $sideBar = "hobbies-sidebar.inc.php";
 require("includes/header.inc.php");
@@ -8,25 +8,25 @@ require("includes/header.inc.php");
 		<main>
 
 			<div class="content-frame">
-				<h1>About Me</h1>
 				<div class="img-container">
-					<img src="<?php echo(IMAGES_DIR); ?>Desert.jpg" alt="A desert!">
+					<img src="<?php echo(IMAGES_DIR); ?>motorcycle_home.jpg" alt="KZ400D Cafe Racer">
 				</div>
+				<h3 class="about-h3">About Me</h3>
 				<p>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-				</p>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					Welcome to my website! The content you'll find here is a collection of things I find interesting. 
+					Check out the blog section to find posts related to my hobbies and anything else I may decide to share.
+					<br>
+					<br>
+					I am currently enrolled in the Web and Software Development program at Western Technical College in La Crosse, WI, and I also have an AAS in 
+					Biomedical Equipment Technology from Southeastern Technical College in Winona, MN. I currently work as a Lead Technician at Gaming Generations in 
+					Onalaska, WI. I manage a team of five technicians, and we repair mobile phones, tablets, computers, and game consoles. 
+					I am a firm believer in the right to repair movement, and I think everyone should have access to the resources required to repair and reuse the 
+					products they own. 
+					<br>
+					<br>
+					Aside from the hobbies I have listed to the right, I enjoy spending time with family and friends and working with hardware. 
+					I am a massive music nerd, and love to indulge in several television series. Please feel free to get in touch me with me using 
+					the <a href="contact.php">contact</a> page on this site.
 				</p>
 			</div>
 			
