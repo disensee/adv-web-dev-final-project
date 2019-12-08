@@ -1,10 +1,11 @@
 window.addEventListener('load', function(){
 
   var images = [
-    "images/Jellyfish.jpg",
-    "images/Koala.jpg",
-    "images/Penguins.jpg",
-    "images/Tulips.jpg"
+    "images/openroad.jpg",
+    "images/caferacer.jpg",
+    "images/city.jpg",
+    "images/keyboard.jpg",
+    "images/meal.jpg"
   ];
 
   // set up a counter to keep track of the current img
