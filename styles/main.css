@@ -108,8 +108,7 @@ aside li{
 }
 
 .img-container{
-	width: 70%;
-	
+	width: 90%;
 	padding: 20px;
 }
 
@@ -142,10 +141,6 @@ footer a{
 
 .about-h3{
 	padding-top: 20px;
-}
-
-p a{
-	color: darkslategrey;
 }
 
 .blog-page-list a{
