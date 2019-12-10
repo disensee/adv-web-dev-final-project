@@ -28,12 +28,10 @@ $validationErrors = array();
 if($_SERVER['REQUEST_METHOD'] == "GET"){
 	
 	if(isset($_GET['pageId'])){
-		//echo("ABOUT TO EDIT PAGE: " . $_GET['pageId'] . " (UPDATE)");
 		$page = $pda->getPageById($_GET['pageId']);
 	}
 
 }elseif($_SERVER['REQUEST_METHOD'] == "POST"){
-	//echo("The form has been submitted, we need to validate the input, then check the pageId to see if we should insert or update");
 
 	// Get the user input and stuff it into the $page array
 	$page['pageId'] = $_POST['pageId'];
@@ -65,10 +63,7 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
 		header("Location: " . PROJECT_DIR . "control-panel/blog-list.php");
 		exit();
 	}
-	// else{
-	// 	var_dump($validationErrors); 
-	// 	// we'll comment the above line out soon, but for now it shows us validation error messages
-	// }
+
 }else{
 	// we only accept GET and POST requests
 	header("Location: " . PROJECT_DIR . "error.php");
