@@ -27,7 +27,7 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
 	define("SERVER_THUMBNAIL_FOLDER", SERVER_UPLOAD_FOLDER . "thumbnails/");
 }else{
     //settings for live site
-    define("PROJECT_DIR", "/my-new-site/");
+    define("PROJECT_DIR", "/");
     define("IMAGES_DIR", PROJECT_DIR . "images/");
     define("DEBUG_MODE", false);
 	define("ADMIN_EMAIL", "isenseed@students.westerntc.edu");
