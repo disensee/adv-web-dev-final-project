@@ -2,7 +2,7 @@
 require_once("includes/config.inc.php");
 $pageTitle = "Error | dylanisensee.com";
 $pageDescription = "Sorry. There was an error.";
-//$sideBar = "hobbies-sidebar.inc.php";
+$sideBar = "hobbies-sidebar.inc.php";
 require("includes/header.inc.php");
 ?>
 		<main>

@@ -23,7 +23,6 @@ if(!$page || $page['active'] == "no"){
 
 $pageTitle = $page['title'];
 $pageDescription = $page['description'];
-//$sideBar = "hobbies-sidebar.inc.php";
 
 require("../includes/header.inc.php");
 ?>
@@ -42,11 +41,5 @@ require("../includes/header.inc.php");
 		</main>
 		
 <?php
-if(!empty($sideBar)){
-	require("../includes/" . $sideBar);
-}
-
 require("../includes/footer.inc.php");
-
-
 ?>

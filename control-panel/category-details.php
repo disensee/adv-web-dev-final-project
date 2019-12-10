@@ -10,7 +10,7 @@ $pageDescription = "";
 $category = array();
 $category['categoryId'] = "";
 $category['name'] = "";
-$category['active'] = "";
+$category['active'] = "no";
 
 
 // Set up the $pda object 
@@ -24,8 +24,6 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
 	
 	if(isset($_GET['categoryId'])){
 		$category = $cda->getCategoryById($_GET['categoryId']);
-	}else{
-		echo("ABOUT TO CREATE NEW CATEGORY (INSERT)");
 	}
 
 }elseif($_SERVER['REQUEST_METHOD'] == "POST"){

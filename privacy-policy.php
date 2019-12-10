@@ -18,11 +18,6 @@ require("includes/header.inc.php");
 			
 		</main>
 <?php
-if(!empty($sideBar)){
-	require("includes/" . $sideBar);
-}
-
-
 require("includes/footer.inc.php")
 ?>
 
