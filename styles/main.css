@@ -150,12 +150,11 @@ footer a{
 	line-height: 20px; 
 }
 
-#blog-page-container{
-	font-weight: bold;
+#page-link-container{
 	padding-top:20px;
 }
 
-#blog-page-container a{
+#page-link-container a{
 	font-weight: bold;
 	padding:10px;
 }

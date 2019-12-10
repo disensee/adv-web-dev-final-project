@@ -65,7 +65,7 @@ class PageDataAccess{
 			}
 		}
 		
-		$qStr = "SELECT pageId, path, title, DATE_FORMAT(publishedDate,'%m/%e/%Y') as publishedDate, active FROM pages WHERE active = 'yes' LIMIT $start, $display";
+		$qStr = "SELECT pageId, path, title, publishedDate, active FROM pages WHERE active = 'yes' ORDER BY publishedDate DESC LIMIT $start, $display";
 		
 		//die($qStr); //using die() after $qStr is a good way to see the query while testing
 	
@@ -86,7 +86,7 @@ class PageDataAccess{
 		echo(createBlogList($pageList));
 		//Make the links to other pages if necessary
 		if($pages > 1){
-			echo('<div id="blog-page-container"');
+			echo('<div id="page-link-container"');
 			echo('<br><p>');
 	
 			//determine what page the script is on

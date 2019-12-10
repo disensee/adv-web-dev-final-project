@@ -17,11 +17,12 @@ $pda = new PageDataAccess(getDBLink());
 
 if(isset($_POST['btn_search'])){
     $search = mysqli_real_escape_string($pda->getLink(), $_POST['txt_search']);
-    $qStr = "SELECT pageId, title, description, content
+    $qStr = "SELECT pageId, title, description, content, publishedDate
             FROM pages
             WHERE MATCH (title, description, content)
             AGAINST ('$search')
-            AND active = 'yes'";
+            AND active = 'yes'
+            ORDER BY publishedDate DESC";
     
     $result = mysqli_query($pda->getLink(), $qStr); 
     $num_rows = mysqli_num_rows($result);
