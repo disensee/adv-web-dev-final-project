@@ -30,8 +30,6 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
 	if(isset($_GET['pageId'])){
 		//echo("ABOUT TO EDIT PAGE: " . $_GET['pageId'] . " (UPDATE)");
 		$page = $pda->getPageById($_GET['pageId']);
-	}else{
-		echo("ABOUT TO CREATE NEW BLOG PAGE (INSERT)");
 	}
 
 }elseif($_SERVER['REQUEST_METHOD'] == "POST"){
