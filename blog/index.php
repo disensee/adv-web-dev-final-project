@@ -7,7 +7,6 @@ $sideBar = "hobbies-sidebar.inc.php";
 require("../includes/header.inc.php");
 
 $pda = new PageDataAccess(getDBLink());
-$activePages = $pda->getPageList();
 
 $display = 5;
 
