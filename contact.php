@@ -20,11 +20,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 			$msg = "First Name: {$scrubbed['txtFirstName']}\nLast Name: {$scrubbed['txtLastName']}\nEmail: {$scrubbed['txtEmail']}\nComments: {$scrubbed['txtComments']}";
 			$msg = wordwrap($body, 70);
-
-			// If the data is valid, then put it into a single string to send as an email 
-			// $msg = "Name: $firstName $lastName <br>";
-			// $msg .= "Email: $email <br>";
-			// $msg .= "Comments: $comments";
 		
 			sendEmail(ADMIN_EMAIL, "Contact Form", $msg , "From: " . $email); // NOTE: we can uncomment the third param after we update the sendEmail() function!!!
 			header("Location: " . PROJECT_DIR . "contact-confirmation.php");
