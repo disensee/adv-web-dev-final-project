@@ -30,7 +30,7 @@ if($_SERVER['SERVER_NAME'] == "localhost"){
     define("PROJECT_DIR", "/");
     define("IMAGES_DIR", PROJECT_DIR . "images/");
     define("DEBUG_MODE", false);
-	define("ADMIN_EMAIL", "isenseed@students.westerntc.edu");
+	define("ADMIN_EMAIL", "dylan@dylanisensee.com");
 	define("DB_HOST", "localhost");
 	define("DB_USER", "dylanise_dylan");
 	define("DB_PASSWORD", "lI5w~#U[Le*)");
